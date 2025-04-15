@@ -1,0 +1,14 @@
+aliases: []
+creation_timestamp: 1743500197290
+current_stage: None
+description: ''
+last_updated_timestamp: 1743500197290
+name: crypto_sentiment_model_1
+run_id: 8b0dca3af14e4a298f63bc0c88477a72
+run_link: ''
+source: mlflow-artifacts:/517643302136057316/8b0dca3af14e4a298f63bc0c88477a72/artifacts/cnn_model_run1
+status: READY
+status_message: null
+storage_location: mlflow-artifacts:/517643302136057316/8b0dca3af14e4a298f63bc0c88477a72/artifacts/cnn_model_run1
+user_id: null
+version: 1

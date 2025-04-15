@@ -1,0 +1,15 @@
+artifact_uri: mlflow-artifacts:/587300990736409416/db79976138bb447f8b2f012ac864eaba/artifacts
+end_time: 1743763233558
+entry_point_name: ''
+experiment_id: '587300990736409416'
+lifecycle_stage: active
+run_id: db79976138bb447f8b2f012ac864eaba
+run_name: Run_90_Opt-adamw_BS-8_Ep-30_Neurons-32_Dropout-0.4_LR-0.0001
+run_uuid: db79976138bb447f8b2f012ac864eaba
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1743763227220
+status: 3
+tags: []
+user_id: horialitan

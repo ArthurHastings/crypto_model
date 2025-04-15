@@ -1,0 +1,16 @@
+artifact_uri: mlflow-artifacts:/375272536411243195/155f094584f94c689940f55e502959b9/artifacts
+deleted_time: 1744710465719
+end_time: 1744710417088
+entry_point_name: ''
+experiment_id: '375272536411243195'
+lifecycle_stage: deleted
+run_id: 155f094584f94c689940f55e502959b9
+run_name: SimpleLSTM_BS-16_Ep-30_Neurons-32_Dropout-0_LR-0.0005
+run_uuid: 155f094584f94c689940f55e502959b9
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1744710410230
+status: 3
+tags: []
+user_id: horialitan
