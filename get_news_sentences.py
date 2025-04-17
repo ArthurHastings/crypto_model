@@ -108,8 +108,6 @@ if __name__ == "__main__":
     print("Total headlines to process:", len(sentence_pad_dict_headline["Date"]))
     
     response_headline_sentiment = api_call(sentence_pad_dict_headline, batch_size=200)
-    response_summary_sentiment = api_call(sentence_pad_dict_summary, batch_size=200)
-
     df_headlines = pd.DataFrame({
         "Date": response_headline_sentiment["Date"],
         "Headline": headline_dict["Sentence"][::-1],        
@@ -117,7 +115,10 @@ if __name__ == "__main__":
         "Neutral": [pred[1] for pred in response_headline_sentiment["Sentence"]],
         "Positive": [pred[2] for pred in response_headline_sentiment["Sentence"]]
     })
+    df_headlines.to_csv(f"headline_sentiments{period}d.csv", index=False)
+    print("Headline predictions saved to headline_sentiments.csv")
 
+    response_summary_sentiment = api_call(sentence_pad_dict_summary, batch_size=200)
     df_summary = pd.DataFrame({
         "Date": response_summary_sentiment["Date"],
         "Headline": summary_dict["Sentence"][::-1],        
@@ -125,7 +126,5 @@ if __name__ == "__main__":
         "Neutral": [pred[1] for pred in response_summary_sentiment["Sentence"]],
         "Positive": [pred[2] for pred in response_summary_sentiment["Sentence"]]
     })
-    df_headlines.to_csv(f"headline_sentiments{period}d.csv", index=False)
-    print("Headline predictions saved to headline_sentiments.csv")
     df_summary.to_csv(f"summary_sentiments{period}d.csv", index=False)
     print("Summary predictions saved to headline_sentiments.csv")

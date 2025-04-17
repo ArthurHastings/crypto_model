@@ -1,6 +1,7 @@
 import pandas as pd
 from datetime import datetime, timedelta
 import yfinance as yf
+import os
 
 period = 360
 stock_symbol = "AAPL"
@@ -10,7 +11,6 @@ if __name__ == "__main__":
 
     df_price = df_price.reset_index()
     df_price.columns = ['Date', 'Close', 'High', 'Low', 'Open', 'Volume']
-
     df_price['Target'] = (df_price['Close'].shift(-1) > df_price['Close']).astype(int)
 
     df_sentiment_headline = pd.read_csv(f"filled_headline_sentiments{period}d.csv")
@@ -54,3 +54,13 @@ if __name__ == "__main__":
     df_price["Sentiment summary"] = df_price["Date"].apply(compute_sentiment_summary)
 
     df_price.to_csv(f"apple_price_sentiment_{period}d.csv", index=False)
+
+    try:
+        os.remove(f"filled_headline_sentiments{period}d.csv")
+    except FileNotFoundError:
+        print(f"File filled_headline_sentiments{period}d.csv not found.")
+
+    try:
+        os.remove(f"filled_summary_sentiments{period}d.csv")
+    except FileNotFoundError:
+        print(f"File filled_summary_sentiments{period}d.csv not found.")

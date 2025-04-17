@@ -3,12 +3,12 @@ from main_model import stock_symbol, url_api, tokenizer  # AAPL
 from final_dataset_combine import period
 
 mlflow.set_tracking_uri("http://localhost:5003")
-mlflow.set_experiment("PROIECT_CRYPTO_PRICEv5.3.1")
+mlflow.set_experiment("PROIECT_CRYPTO_PRICEv6")
 
 data = pd.read_csv(f"apple_price_sentiment_{period}d.csv")
 data = data[:-1]
 
-X = data[['Open', 'High', 'Low', 'Volume', 'Sentiment headline', 'Sentiment summary']]
+X = data[['Open', 'High', 'Low', 'Volume', 'Negative', "Neutral", "Positive"]]
 y = data['Target']
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=68)
@@ -17,7 +17,6 @@ scaler = StandardScaler()
 X_train_scaled = scaler.fit_transform(X_train)
 X_test_scaled = scaler.transform(X_test)
 
-# Reshape input for LSTM (samples, timesteps, features)
 X_train_scaled = X_train_scaled.reshape((X_train_scaled.shape[0], 1, X_train_scaled.shape[1]))
 X_test_scaled = X_test_scaled.reshape((X_test_scaled.shape[0], 1, X_test_scaled.shape[1]))
 
@@ -27,6 +26,13 @@ epochs_list = [30]
 neurons = [32, 64, 128]
 dropouts = [0, 0.3, 0.4]
 learning_rates = [0.001, 0.0005, 0.0001]
+
+# optimizers = ["adamw"]
+# batch_sizes = [16]
+# epochs_list = [30]
+# neurons = [32]
+# dropouts = [0]
+# learning_rates = [0.001]
 
 param_combinations = list(itertools.product(optimizers, batch_sizes, epochs_list, neurons, dropouts, learning_rates))
 
