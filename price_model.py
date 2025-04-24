@@ -6,14 +6,20 @@ from main_model import stock_symbol, url_api, tokenizer
 from final_dataset_combine import period
 import shap
 
-mlflow.set_tracking_uri("http://localhost:5000")
+mlflow.set_tracking_uri("http://localhost:5002")
 mlflow.set_experiment("PROIECT_CRYPTO_PRICEv7")
 
 
 data = pd.read_csv(f"apple_price_sentiment_{period}d.csv")
-data = data[:-1]
-X = data[['Open', 'High', 'Low', 'Volume', 'Negative', "Neutral", "Positive"]]
-y = data['Target']
+for col in ['Close', 'Open', 'High', 'Low', 'Volume', 'Negative', 'Neutral', 'Positive']:
+    data[col] = data[col].shift(1)
+
+# Drop the first row (now has NaNs from shifting)
+data = data.dropna().reset_index(drop=True)
+
+# Define features and target
+X = data[['Close', 'Open', 'High', 'Low', 'Volume', 'Negative', 'Neutral', 'Positive']]
+y = data['Target']  # This is still the original 'price(t) > price(t-1)' label
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=68)
 scaler = StandardScaler()
@@ -22,6 +28,9 @@ X_test  = scaler.transform(X_test)
 
 X_train = X_train.reshape((X_train.shape[0], 1, X_train.shape[1]))
 X_test  = X_test.reshape((X_test.shape[0], 1, X_test.shape[1]))
+
+shap_sums = {name: 0 for name in ['Close', 'Open', 'High', 'Low', 'Volume', 'Negative', 'Neutral', 'Positive']}
+num_trials = 40  # Total number of trials you're running
 
 def objective(trial):
     optimizer_name  = trial.suggest_categorical("optimizer",    ["adam", "adamw"])
@@ -68,41 +77,46 @@ def objective(trial):
         )
         # ------------------------------------------------------------------------------------------------------------------
 
-        X_full = data[['Open', 'High', 'Low', 'Volume', 'Negative', "Neutral", "Positive"]]
-
-        # Match X_test to X_full for feature names
         n_explain = min(100, X_test.shape[0])
-        X_explain_seq = X_test[:n_explain]
-        X_explain_flat = X_explain_seq.reshape((n_explain, X_explain_seq.shape[2]))
+        X_explain_seq = X_test[:n_explain]  # Shape: (n_explain, 1, 7)
+        X_explain_flat = X_explain_seq.reshape((n_explain, X_explain_seq.shape[2]))  # Shape: (n_explain, 7)
 
-        # Get feature names from the original DataFrame
-        feature_names = X_full.columns.tolist()
+        # 2. Define feature names manually
+        feature_names = ['Close', 'Open', 'High', 'Low', 'Volume', 'Negative', 'Neutral', 'Positive']
 
-        # KernelExplainer needs 2D input, and model output must be 1D or 2D
+        # 3. Wrap model prediction with reshaping
         def model_predict(data_flat):
             data_seq = data_flat.reshape((data_flat.shape[0], 1, data_flat.shape[1]))
             return model.predict(data_seq, verbose=0)
 
-        # Use a representative background sample (also 2D flat input)
+        # 4. Use background set of same shape (flattened 2D)
         background = X_train[:n_explain].reshape((n_explain, X_train.shape[2]))
 
-        # SHAP explanation
+        # 5. Explain
         explainer = shap.KernelExplainer(model_predict, background)
         shap_values = explainer.shap_values(X_explain_flat)
 
-        # Handle classification output format
         if isinstance(shap_values, list):
-            shap_values = shap_values[0]  # use the first output class
+            shap_values = shap_values[0]
 
-        # Plot and save the SHAP summary
-        if shap_values is not None and shap_values.shape[1] == len(feature_names):
-            shap.summary_plot(shap_values, X_explain_flat, feature_names=feature_names, show=False)
-            plt.tight_layout()
-            plt.savefig("shap_summary_plot_fixed.png")
-            plt.close()
-            print("✅ SHAP summary plot saved as 'shap_summary_plot_fixed.png'")
-        else:
-            print(f"⚠️ SHAP values have unexpected shape: {np.shape(shap_values)}")
+        # 6. Diagnostic: print mean absolute SHAP values per feature
+        mean_shap = np.abs(shap_values).mean(axis=0)
+        print("📊 Mean absolute SHAP values:")
+        for name, val in zip(feature_names, mean_shap):
+            print(f"  {name:>8}: {float(val):.5f}")
+        
+        mlflow.log_metrics({
+            "mean_shap_positive": float(mean_shap[feature_names.index("Positive")]),
+            "mean_shap_negative": float(mean_shap[feature_names.index("Negative")]),
+        })
+
+        # Inside the objective function, collect SHAP values for each trial and store them
+        for trial_num in range(num_trials):
+            # After training and getting shap_values in each trial, calculate mean SHAP values for each feature
+            for name, val in zip(feature_names, mean_shap):
+                shap_sums[name] += val  # Accumulate SHAP values across all trials
+
+
 
         # ------------------------------------------------------------------------------------------------------------------
         mlflow.log_metric("training_time", time.time() - start)
@@ -120,9 +134,16 @@ def objective(trial):
 
 if __name__ == "__main__":
     study = optuna.create_study(direction="maximize")
-    study.optimize(objective, n_trials=20)
+    study.optimize(objective, n_trials=40)
 
     print("✅ Best trial:")
     print(f"  Value (best_val_accuracy): {study.best_trial.value:.4f}")
     for key, val in study.best_trial.params.items():
         print(f"  {key}: {val}")
+
+    avg_shap = {name: shap_sums[name] / num_trials for name in shap_sums}
+
+    # Now, print the average SHAPs values after all trials
+    print("\nAverage SHAP values after all trials:")
+    for name, avg_val in avg_shap.items():
+        print(f"  {name:>8}: {float(avg_val):.5f}")
