@@ -6,7 +6,7 @@ from main_model import stock_symbol, url_api, tokenizer
 from final_dataset_combine import period
 import shap
 
-mlflow.set_tracking_uri("http://localhost:5001")
+mlflow.set_tracking_uri("https://82e1-2a02-2f04-530c-c000-6d28-99e1-bac3-def3.ngrok-free.app")
 mlflow.set_experiment("PROIECT_CRYPTO_PRICEv7.1")
 
 
@@ -39,7 +39,7 @@ def objective(trial):
     dropout_rate    = trial.suggest_float(      "dropout",      0.0, 0.5)
     learning_rate   = trial.suggest_loguniform( "learning_rate", 1e-10, 1e-2)
 
-    with mlflow.start_run(nested=True):
+    with mlflow.start_run(nested=True) as run:
         mlflow.set_tag("mlflow.runName", f"Optuna_trial_{trial.number}")
         mlflow.log_params({
             "optimizer": optimizer_name,
@@ -127,13 +127,17 @@ def objective(trial):
         model_path = f"lstm_model_trial_{trial.number}"
         mlflow.tensorflow.log_model(model, artifact_path=model_path)
         trial.set_user_attr("model_path", model_path)
+        
+        # Save correct run ID and path
+        trial.set_user_attr("run_id", run.info.run_id)
+        trial.set_user_attr("model_path", model_path)
 
 
         return best_val_accuracy
 
 if __name__ == "__main__":
     study = optuna.create_study(direction="maximize")
-    study.optimize(objective, n_trials=5)
+    study.optimize(objective, n_trials=2)
 
     print("✅ Best trial:")
     print(f"  Value (best_val_accuracy): {study.best_trial.value:.4f}")
@@ -147,17 +151,18 @@ if __name__ == "__main__":
     for name, avg_val in avg_shap.items():
         print(f"  {name:>8}: {float(avg_val):.5f}")
 
-    # Get best model path from trial attributes
-    best_model_path = study.best_trial.user_attrs["model_path"]
-    model_uri = f"runs:/{study.best_trial._trial_id}/{best_model_path}"
-
-    # Load model from MLflow
-    best_model = mlflow.keras.load_model(model_uri)
+    
 
 
     # ---------------------- PREDICTIONS ---------------------
 
+    run_id = study.best_trial.user_attrs["run_id"]
+    model_path = study.best_trial.user_attrs["model_path"]
+    model_uri = f"runs:/{run_id}/{model_path}"
+
+    best_model = mlflow.tensorflow.load_model(model_uri)
     # Load the most recent data
+
     data = pd.read_csv(f"apple_price_sentiment_{period}d.csv")
 
     # Prepare the features for prediction (latest row)
@@ -165,7 +170,8 @@ if __name__ == "__main__":
 
     # Extract relevant columns
     latest_features = latest_data[['Close', 'Open', 'High', 'Low', 'Volume', 'Negative', 'Neutral', 'Positive']]
-
+    print("----------------- Todays data: -----------------")
+    print(latest_features)
     # Apply the same scaler used during training
     latest_features_scaled = scaler.transform(latest_features)
     latest_features_scaled = latest_features_scaled.reshape((1, 1, latest_features_scaled.shape[1]))
@@ -174,3 +180,7 @@ if __name__ == "__main__":
     predicted_movement = best_model.predict(latest_features_scaled)
     predicted_class = "Up" if predicted_movement[0] > 0.5 else "Down"
     print(f"📈 Prediction for tomorrow: The price is predicted to go {predicted_class}.")
+
+    with open("prediction_result.txt", "w") as f:
+        f.write(f"📈 Prediction for tomorrow for {stock_symbol}: The price is predicted to go {predicted_class}.")
+

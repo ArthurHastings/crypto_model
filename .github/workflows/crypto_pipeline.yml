@@ -63,3 +63,10 @@ jobs:
 
       - name: Predict tomorrow's price
         run: python price_model.py
+      
+      - name: Upload prediction result
+        uses: actions/upload-artifact@v3
+        with:
+          name: prediction_result
+          path: prediction_result.txt
+
