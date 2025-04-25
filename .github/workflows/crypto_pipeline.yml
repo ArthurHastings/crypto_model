@@ -65,7 +65,7 @@ jobs:
         run: python price_model.py
       
       - name: Upload prediction result
-        uses: actions/upload-artifact@actions/upload-artifact@v3.1.3
+        uses: actions/upload-artifact@v3.1.3
         with:
           name: prediction_result
           path: prediction_result.txt
