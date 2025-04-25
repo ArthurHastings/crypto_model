@@ -1,0 +1,65 @@
+name: Daily Crypto Pipeline
+
+on:
+  schedule:
+    - cron: '0 6 * * *'  # Runs every day at 6:00 UTC (you can change this)
+  workflow_dispatch:       # Allows manual trigger
+
+jobs:
+  run-pipeline:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11.0'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Install ngrok
+        run: |
+          curl -s https://ngrok.com/download | tar xz
+          sudo mv ngrok /usr/local/bin
+
+      - name: Start ngrok and expose MLflow API
+        run: |
+          # Start ngrok in the background and expose your local model API (port 5002)
+          nohup ngrok http 5002 &
+
+          # Wait for ngrok to initialize and ensure the public URL is ready
+          echo "Waiting for ngrok to initialize..."
+          for i in {1..10}; do
+            export PUBLIC_URL=$(curl -s http://localhost:4040/api/tunnels | jq -r '.tunnels[0].public_url')
+            if [[ "$PUBLIC_URL" != "null" && -n "$PUBLIC_URL" ]]; then
+              echo "Public URL is ready: $PUBLIC_URL"
+              break
+            fi
+            sleep 3
+          done
+
+          if [[ -z "$PUBLIC_URL" ]]; then
+            echo "ngrok failed to provide a public URL."
+            exit 1
+          fi
+
+      - name: Set the public URL for the model API in the Python script
+        run: |
+          # Replace the model API URL in get_news_sentences.py with the ngrok public URL
+          sed -i "s|http://localhost:5002/invocations|$PUBLIC_URL/invocations|" get_news_sentences.py
+
+      - name: Fetch daily sentiments
+        run: python get_news_sentences.py
+
+      - name: Preprocess sentiments
+        run: python clean_headline_sentiment.py
+
+      - name: Combine final dataset
+        run: python generate_csv.py
+
+      - name: Predict tomorrow's price
+        run: python price_model.py

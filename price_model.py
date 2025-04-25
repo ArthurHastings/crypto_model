@@ -6,20 +6,19 @@ from main_model import stock_symbol, url_api, tokenizer
 from final_dataset_combine import period
 import shap
 
-mlflow.set_tracking_uri("http://localhost:5002")
-mlflow.set_experiment("PROIECT_CRYPTO_PRICEv7")
+mlflow.set_tracking_uri("http://localhost:5001")
+mlflow.set_experiment("PROIECT_CRYPTO_PRICEv7.1")
 
 
 data = pd.read_csv(f"apple_price_sentiment_{period}d.csv")
-for col in ['Close', 'Open', 'High', 'Low', 'Volume', 'Negative', 'Neutral', 'Positive']:
-    data[col] = data[col].shift(1)
+data = data[:-1]
+# for col in ['Close', 'Open', 'High', 'Low', 'Volume', 'Negative', 'Neutral', 'Positive']:
+#     data[col] = data[col].shift(1)
 
-# Drop the first row (now has NaNs from shifting)
-data = data.dropna().reset_index(drop=True)
+# data = data.dropna().reset_index(drop=True)
 
-# Define features and target
 X = data[['Close', 'Open', 'High', 'Low', 'Volume', 'Negative', 'Neutral', 'Positive']]
-y = data['Target']  # This is still the original 'price(t) > price(t-1)' label
+y = data['Target']
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=68)
 scaler = StandardScaler()
@@ -30,7 +29,7 @@ X_train = X_train.reshape((X_train.shape[0], 1, X_train.shape[1]))
 X_test  = X_test.reshape((X_test.shape[0], 1, X_test.shape[1]))
 
 shap_sums = {name: 0 for name in ['Close', 'Open', 'High', 'Low', 'Volume', 'Negative', 'Neutral', 'Positive']}
-num_trials = 40  # Total number of trials you're running
+num_trials = 5
 
 def objective(trial):
     optimizer_name  = trial.suggest_categorical("optimizer",    ["adam", "adamw"])
@@ -109,12 +108,9 @@ def objective(trial):
             "mean_shap_positive": float(mean_shap[feature_names.index("Positive")]),
             "mean_shap_negative": float(mean_shap[feature_names.index("Negative")]),
         })
-
-        # Inside the objective function, collect SHAP values for each trial and store them
         for trial_num in range(num_trials):
-            # After training and getting shap_values in each trial, calculate mean SHAP values for each feature
             for name, val in zip(feature_names, mean_shap):
-                shap_sums[name] += val  # Accumulate SHAP values across all trials
+                shap_sums[name] += val
 
 
 
@@ -128,13 +124,16 @@ def objective(trial):
         mlflow.log_metric("test_loss", test_loss)
         mlflow.log_metric("test_accuracy", test_acc)
         
-        mlflow.tensorflow.log_model(model, artifact_path=f"lstm_model_trial_{trial.number}")
+        model_path = f"lstm_model_trial_{trial.number}"
+        mlflow.tensorflow.log_model(model, artifact_path=model_path)
+        trial.set_user_attr("model_path", model_path)
+
 
         return best_val_accuracy
 
 if __name__ == "__main__":
     study = optuna.create_study(direction="maximize")
-    study.optimize(objective, n_trials=40)
+    study.optimize(objective, n_trials=5)
 
     print("✅ Best trial:")
     print(f"  Value (best_val_accuracy): {study.best_trial.value:.4f}")
@@ -147,3 +146,31 @@ if __name__ == "__main__":
     print("\nAverage SHAP values after all trials:")
     for name, avg_val in avg_shap.items():
         print(f"  {name:>8}: {float(avg_val):.5f}")
+
+    # Get best model path from trial attributes
+    best_model_path = study.best_trial.user_attrs["model_path"]
+    model_uri = f"runs:/{study.best_trial._trial_id}/{best_model_path}"
+
+    # Load model from MLflow
+    best_model = mlflow.keras.load_model(model_uri)
+
+
+    # ---------------------- PREDICTIONS ---------------------
+
+    # Load the most recent data
+    data = pd.read_csv(f"apple_price_sentiment_{period}d.csv")
+
+    # Prepare the features for prediction (latest row)
+    latest_data = data.iloc[-1:]  # Get the last row of the dataset
+
+    # Extract relevant columns
+    latest_features = latest_data[['Close', 'Open', 'High', 'Low', 'Volume', 'Negative', 'Neutral', 'Positive']]
+
+    # Apply the same scaler used during training
+    latest_features_scaled = scaler.transform(latest_features)
+    latest_features_scaled = latest_features_scaled.reshape((1, 1, latest_features_scaled.shape[1]))
+
+    # Predict with the best model
+    predicted_movement = best_model.predict(latest_features_scaled)
+    predicted_class = "Up" if predicted_movement[0] > 0.5 else "Down"
+    print(f"📈 Prediction for tomorrow: The price is predicted to go {predicted_class}.")

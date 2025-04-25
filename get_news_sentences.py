@@ -1,7 +1,7 @@
 from imports import *
 
 api_key = "cvpq5t9r01qve7iqiis0cvpq5t9r01qve7iqiisg"
-api_sentiment_model = "http://localhost:5001/invocations"
+api_sentiment_model = "http://localhost:5002/invocations"
 stock_symbol = "AAPL"
 headline_dict = {"Date": [], "Sentence": []}
 summary_dict = {"Date": [], "Sentence": []}
