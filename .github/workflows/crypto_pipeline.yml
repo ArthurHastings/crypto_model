@@ -23,7 +23,9 @@ jobs:
 
       - name: Install ngrok
         run: |
-          curl -s https://ngrok.com/download | tar xz
+          NGROK_VERSION="v3.0.0"  # Specify the version you want to use
+          curl -LO "https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-amd64-${NGROK_VERSION}.tgz"
+          tar -xvzf ngrok-stable-linux-amd64-${NGROK_VERSION}.tgz
           sudo mv ngrok /usr/local/bin
 
       - name: Start ngrok and expose MLflow API
@@ -65,8 +67,9 @@ jobs:
         run: python price_model.py
       
       - name: Upload prediction result
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: prediction_result
           path: prediction_result.txt
+
 
