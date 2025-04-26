@@ -6,7 +6,7 @@ from main_model import stock_symbol, url_api, tokenizer
 from final_dataset_combine import period
 import shap
 
-mlflow.set_tracking_uri("https://82e1-2a02-2f04-530c-c000-6d28-99e1-bac3-def3.ngrok-free.app")
+mlflow.set_tracking_uri("https://111e-2a02-2f04-530c-c000-3d73-c643-e5b0-5725.ngrok-free.app")
 mlflow.set_experiment("PROIECT_CRYPTO_PRICEv7.1")
 
 
