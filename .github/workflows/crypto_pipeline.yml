@@ -27,6 +27,9 @@ jobs:
           echo "deb https://ngrok-agent.s3.amazonaws.com buster main" | sudo tee /etc/apt/sources.list.d/ngrok.list
           sudo apt update && sudo apt install ngrok
 
+      - name: Authenticate ngrok
+        run: ngrok config add-authtoken ${{ secrets.NGROK_AUTHTOKEN }}
+
       - name: Start ngrok and expose MLflow API
         run: |
           # Start ngrok in the background and expose your local model API (port 5002)
@@ -71,4 +74,5 @@ jobs:
           name: prediction_result
           path: prediction_result.txt
 
-
+# 2vjKe8gcVkpxr6d6NW2uVeQm5VJ_4yWBF6Qu2MMLi2UarA4wT : 5002
+# 2wFydqD901sz9dzcxcfpfxocQvD_58Ex39kxnNgMR7gWiV8jL : 5001
