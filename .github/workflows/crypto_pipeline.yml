@@ -21,7 +21,7 @@ jobs:
       - name: Install dependencies and NLTK data
         run: |
           pip install -r requirements.txt
-          python -m nltk.downloader -d /usr/local/share/nltk_data punkt stopwords
+          sudo python -m nltk.downloader -d /usr/local/share/nltk_data punkt stopwords
 
       - name: Set NLTK_DATA environment variable
         run: echo "NLTK_DATA=/usr/local/share/nltk_data" >> $GITHUB_ENV
