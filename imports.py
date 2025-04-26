@@ -40,22 +40,4 @@ from sklearn.preprocessing import StandardScaler
 
 ssl._create_default_https_context = ssl._create_unverified_context
 
-# Dynamically define NLTK data path
-nltk_data_path = os.path.join(os.getcwd(), 'nltk_data')
-if not os.path.exists(nltk_data_path):
-    os.makedirs(nltk_data_path, exist_ok=True)
-
-nltk.data.path.append(nltk_data_path)
-
-# Ensure required resources are available
-try:
-    nltk.corpus.stopwords.words('english')
-except LookupError:
-    nltk.download('stopwords', download_dir=nltk_data_path)
-
-try:
-    nltk.corpus.wordnet.words()
-except LookupError:
-    nltk.download('wordnet', download_dir=nltk_data_path)
-    
 glove_model = api.load("glove-wiki-gigaword-100")
