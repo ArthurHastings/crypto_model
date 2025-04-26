@@ -18,8 +18,10 @@ jobs:
         with:
           python-version: '3.11.0'
 
-      - name: Install dependencies
-        run: pip install -r requirements.txt
+      - name: Install dependencies and NLTK data
+        run: |
+          pip install -r requirements.txt
+          python -m nltk.downloader punkt stopwords
 
       - name: Install ngrok
         run: |
