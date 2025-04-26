@@ -22,7 +22,7 @@ jobs:
         run: pip install -r requirements.txt
 
       - name: Download NLTK data
-        run: sudo python -m nltk.downloader -d /usr/local/share/nltk_data punkt stopwords
+        run: python -m nltk.downloader -d /usr/local/share/nltk_data punkt stopwords
 
       - name: Set NLTK_DATA environment variable
         run: echo "NLTK_DATA=/usr/local/share/nltk_data" >> $GITHUB_ENV
