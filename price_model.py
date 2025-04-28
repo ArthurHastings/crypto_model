@@ -6,8 +6,8 @@ from main_model import stock_symbol, url_api, tokenizer
 from final_dataset_combine import period
 import shap
 
-mlflow.set_tracking_uri("https://5796-2a02-2f04-530c-c000-3d73-c643-e5b0-5725.ngrok-free.app")
-mlflow.set_experiment("PROIECT_CRYPTO_PRICEv7.1")
+mlflow.set_tracking_uri("https://84fc-2a02-2f04-530c-c000-b8e5-3b29-d226-4e0b.ngrok-free.app")
+mlflow.set_experiment("PROIECT_CRYPTO_PRICEv8")
 
 
 data = pd.read_csv(f"apple_price_sentiment_{period}d.csv")
