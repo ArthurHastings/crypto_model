@@ -21,8 +21,13 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
         
-      # - name: Download NLTK data
-      #   run: sudo python -m nltk.downloader -d /usr/local/share/nltk_data punkt stopwords
+      - name: Install NLTK
+        run: |
+          pip install nltk
+          python -c "import nltk, os; path=os.path.join(os.getcwd(), 'nltk_data'); \
+          nltk.download('punkt', download_dir=path); \
+          nltk.download('stopwords', download_dir=path); \
+          nltk.download('wordnet', download_dir=path)"
 
       - name: Set NLTK_DATA environment variable
         run: echo "NLTK_DATA=/usr/local/share/nltk_data" >> $GITHUB_ENV
