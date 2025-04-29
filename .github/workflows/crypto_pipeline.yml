@@ -29,6 +29,11 @@ jobs:
       - name: Set NLTK_DATA environment variable
         run: echo "NLTK_DATA=/usr/local/share/nltk_data" >> $GITHUB_ENV
 
+      - name: Start MLflow model server
+        run: |
+          nohup mlflow models serve -m spam_model -p 5002 --no-conda --host 0.0.0.0 > mlflow.log 2>&1 &
+
+
       - name: Install ngrok
         run: |
           curl -s https://ngrok-agent.s3.amazonaws.com/ngrok.asc | sudo tee /etc/apt/trusted.gpg.d/ngrok.asc >/dev/null

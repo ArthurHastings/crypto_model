@@ -33,6 +33,9 @@ def api_call_batch(sentence_pad_list_batch):
     headers = {"Content-Type": "application/json"}
     
     response = requests.post(api_sentiment_model, data=json.dumps(data), headers=headers)
+    print("Response status code:", response.status_code)
+    print("Response text:", response.text[:500])
+
     try:
         response_json = response.json()
     except json.decoder.JSONDecodeError as e:
