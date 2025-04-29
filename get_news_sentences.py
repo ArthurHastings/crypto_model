@@ -1,4 +1,5 @@
-from imports import *
+import os
+import nltk
 
 nltk_data_path = os.path.join(os.getcwd(), 'nltk_data')
 nltk.data.path.append(nltk_data_path)
@@ -9,6 +10,8 @@ if not os.path.exists(os.path.join(nltk_data_path, 'corpora', 'wordnet')):
     nltk.download('wordnet', download_dir=nltk_data_path)
 if not os.path.exists(os.path.join(nltk_data_path, 'tokenizers', 'punkt')):
     nltk.download('punkt', download_dir=nltk_data_path)
+
+from imports import *
 
 api_key = "cvpq5t9r01qve7iqiis0cvpq5t9r01qve7iqiisg"
 api_sentiment_model = "http://localhost:5002/invocations"
