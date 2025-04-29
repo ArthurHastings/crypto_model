@@ -1,6 +1,6 @@
 import nltk
 
-required_resources = ['punkt', 'stopwords', 'wordnet']
+required_resources = ['punkt', 'stopwords', 'wordnet', "punkt_tab"]
 for resource in required_resources:
     try:
         nltk.data.find(f'corpora/{resource}')
