@@ -3,7 +3,7 @@ import mlflow
 
 # Set the MLFLOW_TRACKING_URI environment variable for the CLI
 # os.environ["MLFLOW_TRACKING_URI"] = "http://localhost:5000"
-mlflow.set_tracking_uri("http://localhost:5001")
+mlflow.set_tracking_uri("http://localhost:5003")
 
 # Command to serve the model
 command = [
