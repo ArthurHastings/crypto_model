@@ -152,8 +152,6 @@ if __name__ == "__main__":
         print(f"  {name:>8}: {float(avg_val):.5f}")
 
     
-
-
     # ---------------------- PREDICTIONS ---------------------
 
     run_id = study.best_trial.user_attrs["run_id"]
@@ -161,22 +159,17 @@ if __name__ == "__main__":
     model_uri = f"runs:/{run_id}/{model_path}"
 
     best_model = mlflow.tensorflow.load_model(model_uri)
-    # Load the most recent data
 
     data = pd.read_csv(f"apple_price_sentiment_{period}d.csv")
 
-    # Prepare the features for prediction (latest row)
-    latest_data = data.iloc[-1:]  # Get the last row of the dataset
+    latest_data = data.iloc[-1:]
 
-    # Extract relevant columns
     latest_features = latest_data[['Close', 'Open', 'High', 'Low', 'Volume', 'Negative', 'Neutral', 'Positive']]
     print("----------------- Todays data: -----------------")
     print(latest_features)
-    # Apply the same scaler used during training
     latest_features_scaled = scaler.transform(latest_features)
     latest_features_scaled = latest_features_scaled.reshape((1, 1, latest_features_scaled.shape[1]))
 
-    # Predict with the best model
     predicted_movement = best_model.predict(latest_features_scaled)
     predicted_class = "Up" if predicted_movement[0] > 0.5 else "Down"
     print(f"📈 Prediction for tomorrow: The price is predicted to go {predicted_class}.")

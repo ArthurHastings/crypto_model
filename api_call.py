@@ -5,7 +5,7 @@ from tensorflow.keras.preprocessing.sequence import pad_sequences
 from dataset_concat import preprocess_text
 import numpy as np
 
-url = "https://5d75-213-233-110-28.ngrok-free.app/invocations"
+url = "https://bd26-213-233-104-116.ngrok-free.app/invocations"
 
 with open("tokenizer.pkl", "rb") as f:
     tokenizer = pickle.load(f)
