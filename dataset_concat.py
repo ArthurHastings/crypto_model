@@ -1,3 +1,12 @@
+import nltk
+
+required_resources = ['punkt', 'stopwords', 'wordnet']
+for resource in required_resources:
+    try:
+        nltk.data.find(f'corpora/{resource}')
+    except LookupError:
+        nltk.download(resource)
+
 import numpy as np
 import pandas as pd
 from nltk.tokenize import word_tokenize
