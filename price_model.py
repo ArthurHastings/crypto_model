@@ -4,7 +4,7 @@ from final_dataset_combine import period
 import optuna
 import shap
 
-mlflow.set_tracking_uri("https://33e1-213-233-104-116.ngrok-free.app")
+mlflow.set_tracking_uri("https://e313-213-233-104-116.ngrok-free.app")
 mlflow.set_experiment("PROIECT_CRYPTO_PRICEv8")
 
 
