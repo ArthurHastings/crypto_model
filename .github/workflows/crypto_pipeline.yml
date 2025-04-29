@@ -65,7 +65,8 @@ jobs:
 
       - name: Set API URL environment variable
         run: |
-          echo "API_SENTIMENT_MODEL=$(grep PUBLIC_URL $GITHUB_ENV | cut -d '=' -f2)/invocations" >> $GITHUB_ENV
+          echo "API_SENTIMENT_MODEL=${{ env.PUBLIC_URL }}/invocations" >> $GITHUB_ENV
+
 
 
       - name: Run get_news_sentences.py
