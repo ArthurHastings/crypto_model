@@ -31,7 +31,7 @@ jobs:
 
       - name: Start MLflow model server
         run: |
-          nohup mlflow models serve -m spam_model -p 5002 --no-conda --host 0.0.0.0 > mlflow.log 2>&1 &
+          nohup mlflow models serve -m mlruns/models/crypto_sentiment_model_1 -p 5002 --no-conda --host 0.0.0.0 > mlflow.log 2>&1 &
 
 
       - name: Install ngrok
