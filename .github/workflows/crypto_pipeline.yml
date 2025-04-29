@@ -46,7 +46,8 @@ jobs:
           # Wait for ngrok to initialize and ensure the public URL is ready
           echo "Waiting for ngrok to initialize..."
           for i in {1..10}; do
-            export PUBLIC_URL=$(curl -s http://localhost:4040/api/tunnels | jq -r '.tunnels[0].public_url')
+            PUBLIC_URL=$(curl -s http://localhost:4040/api/tunnels | jq -r '.tunnels[0].public_url')
+            echo "PUBLIC_URL=$PUBLIC_URL" >> $GITHUB_ENV
             if [[ "$PUBLIC_URL" != "null" && -n "$PUBLIC_URL" ]]; then
               echo "Public URL is ready: $PUBLIC_URL"
               break
@@ -62,14 +63,15 @@ jobs:
           # Debugging: Print the PUBLIC_URL
           echo "Final PUBLIC_URL: $PUBLIC_URL"
 
-      - name: Set the public URL for the model API in the Python script
+      - name: Set API URL environment variable
         run: |
-          # Replace the model API URL in get_news_sentences.py with the ngrok public URL
-          sed -i "s|http://localhost:5002/invocations|$PUBLIC_URL/invocations|" get_news_sentences.py
+          echo "API_SENTIMENT_MODEL=$(grep PUBLIC_URL $GITHUB_ENV | cut -d '=' -f2)/invocations" >> $GITHUB_ENV
 
 
-      - name: Fetch daily sentiments
+      - name: Run get_news_sentences.py
         run: python get_news_sentences.py
+        env:
+          API_SENTIMENT_MODEL: ${{ env.API_SENTIMENT_MODEL }}
 
       - name: Preprocess sentiments
         run: python clean_headline_sentiment.py
