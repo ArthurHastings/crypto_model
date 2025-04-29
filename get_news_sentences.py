@@ -1,4 +1,5 @@
-from imports import *
+import os
+import nltk
 
 nltk_data_path = os.path.join(os.getcwd(), 'nltk_data')
 nltk.data.path.append(nltk_data_path)
@@ -10,8 +11,11 @@ if not os.path.exists(os.path.join(nltk_data_path, 'corpora', 'wordnet')):
 if not os.path.exists(os.path.join(nltk_data_path, 'tokenizers', 'punkt')):
     nltk.download('punkt', download_dir=nltk_data_path)
 
+from imports import *
+
 api_key = "cvpq5t9r01qve7iqiis0cvpq5t9r01qve7iqiisg"
 api_sentiment_model = "http://localhost:5002/invocations"
+api_sentiment_model = os.getenv("API_SENTIMENT_MODEL", "http://localhost:5002/invocations")
 stock_symbol = "AAPL"
 headline_dict = {"Date": [], "Sentence": []}
 summary_dict = {"Date": [], "Sentence": []}
@@ -29,6 +33,9 @@ def api_call_batch(sentence_pad_list_batch):
     headers = {"Content-Type": "application/json"}
     
     response = requests.post(api_sentiment_model, data=json.dumps(data), headers=headers)
+    print("Response status code:", response.status_code)
+    print("Response text:", response.text[:500])
+
     try:
         response_json = response.json()
     except json.decoder.JSONDecodeError as e:
@@ -117,6 +124,7 @@ if __name__ == "__main__":
 
     print("Total headlines to process:", len(sentence_pad_dict_headline["Date"]))
     
+    print(f"Using API URL: {api_sentiment_model}")  # Debugging line
     response_headline_sentiment = api_call(sentence_pad_dict_headline, batch_size=200)
     df_headlines = pd.DataFrame({
         "Date": response_headline_sentiment["Date"],

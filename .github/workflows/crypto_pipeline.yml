@@ -21,11 +21,18 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
         
-      # - name: Download NLTK data
-      #   run: sudo python -m nltk.downloader -d /usr/local/share/nltk_data punkt stopwords
+      - name: Install NLTK
+        run: |
+          pip install nltk
+          python -c "import nltk, os; path=os.path.join(os.getcwd(), 'nltk_data'); nltk.download('punkt', download_dir=path); nltk.download('stopwords', download_dir=path); nltk.download('wordnet', download_dir=path)"
 
       - name: Set NLTK_DATA environment variable
         run: echo "NLTK_DATA=/usr/local/share/nltk_data" >> $GITHUB_ENV
+
+      - name: Start MLflow model server
+        run: |
+          nohup mlflow models serve -m mlruns/models/crypto_sentiment_model_1 -p 5002 --no-conda --host 0.0.0.0 > mlflow.log 2>&1 &
+
 
       - name: Install ngrok
         run: |
@@ -44,7 +51,8 @@ jobs:
           # Wait for ngrok to initialize and ensure the public URL is ready
           echo "Waiting for ngrok to initialize..."
           for i in {1..10}; do
-            export PUBLIC_URL=$(curl -s http://localhost:4040/api/tunnels | jq -r '.tunnels[0].public_url')
+            PUBLIC_URL=$(curl -s http://localhost:4040/api/tunnels | jq -r '.tunnels[0].public_url')
+            echo "PUBLIC_URL=$PUBLIC_URL" >> $GITHUB_ENV
             if [[ "$PUBLIC_URL" != "null" && -n "$PUBLIC_URL" ]]; then
               echo "Public URL is ready: $PUBLIC_URL"
               break
@@ -57,13 +65,19 @@ jobs:
             exit 1
           fi
 
-      - name: Set the public URL for the model API in the Python script
-        run: |
-          # Replace the model API URL in get_news_sentences.py with the ngrok public URL
-          sed -i "s|http://localhost:5002/invocations|$PUBLIC_URL/invocations|" get_news_sentences.py
+          # Debugging: Print the PUBLIC_URL
+          echo "Final PUBLIC_URL: $PUBLIC_URL"
 
-      - name: Fetch daily sentiments
+      - name: Set API URL environment variable
+        run: |
+          echo "API_SENTIMENT_MODEL=${{ env.PUBLIC_URL }}/invocations" >> $GITHUB_ENV
+
+
+
+      - name: Run get_news_sentences.py
         run: python get_news_sentences.py
+        env:
+          API_SENTIMENT_MODEL: ${{ env.API_SENTIMENT_MODEL }}
 
       - name: Preprocess sentiments
         run: python clean_headline_sentiment.py

@@ -136,7 +136,11 @@ if __name__ == "__main__":
 
     best_model = mlflow.tensorflow.load_model(model_uri)
     data = pd.read_csv(f"apple_price_sentiment_{period}d.csv")
-    latest_data = data.iloc[-1:]
+
+    # Prepare the features for prediction (latest row)
+    latest_data = data.iloc[-1:]  # Get the last row of the dataset
+
+    # Extract relevant columns
     latest_features = latest_data[['Close', 'Open', 'High', 'Low', 'Volume', 'Negative', 'Neutral', 'Positive']]
     print("----------------- Todays data: -----------------")
     print(latest_features)
