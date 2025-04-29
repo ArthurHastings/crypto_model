@@ -59,10 +59,14 @@ jobs:
             exit 1
           fi
 
+          # Debugging: Print the PUBLIC_URL
+          echo "Final PUBLIC_URL: $PUBLIC_URL"
+
       - name: Set the public URL for the model API in the Python script
         run: |
           # Replace the model API URL in get_news_sentences.py with the ngrok public URL
           sed -i "s|http://localhost:5002/invocations|$PUBLIC_URL/invocations|" get_news_sentences.py
+
 
       - name: Fetch daily sentiments
         run: python get_news_sentences.py

@@ -120,6 +120,7 @@ if __name__ == "__main__":
 
     print("Total headlines to process:", len(sentence_pad_dict_headline["Date"]))
     
+    print(f"Using API URL: {api_sentiment_model}")  # Debugging line
     response_headline_sentiment = api_call(sentence_pad_dict_headline, batch_size=200)
     df_headlines = pd.DataFrame({
         "Date": response_headline_sentiment["Date"],
