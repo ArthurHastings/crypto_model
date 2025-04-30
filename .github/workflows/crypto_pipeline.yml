@@ -77,16 +77,16 @@ jobs:
 
       # -------------------------------------------------------------------------------------------
 
-      - name: Run get_news_sentences.py
-        run: python get_news_sentences.py
-        env:
-          API_SENTIMENT_MODEL: ${{ env.API_SENTIMENT_MODEL }}
+      # - name: Run get_news_sentences.py
+      #   run: python get_news_sentences.py
+      #   env:
+      #     API_SENTIMENT_MODEL: ${{ env.API_SENTIMENT_MODEL }}
 
-      - name: Preprocess sentiments
-        run: python clean_headline_sentiment.py
+      # - name: Preprocess sentiments
+      #   run: python clean_headline_sentiment.py
 
-      - name: Combine final dataset
-        run: python generate_csv.py
+      # - name: Combine final dataset
+      #   run: python generate_csv.py
 
       - name: Authenticate 2nd ngrok
         run: ngrok config add-authtoken ${{ secrets.NGROK_AUTHTOKEN_5001 }}
