@@ -90,8 +90,8 @@ jobs:
 
       - name: Set API URL environment variable
         run: |
-          echo "API_SENTIMENT_MODEL=${{ env.PUBLIC_URL }}/invocations" >> $GITHUB_ENV
-          echo "MLFLOW_NGROK=${{ env.MLFLOW_URL }}" >> $GITHUB_ENV
+          echo "API_SENTIMENT_MODEL=${{ env.API_SENTIMENT_MODEL }}" >> $GITHUB_ENV
+          echo "MLFLOW_NGROK=${{ env.MLFLOW_NGROK }}" >> $GITHUB_ENV
 
       # -------------------------------------------------------------------------------------------
 
