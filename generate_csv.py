@@ -1,8 +1,8 @@
 import pandas as pd
 import yfinance as yf
 import os
+from get_news_sentences import period
 
-period = 360
 stock_symbol = "AAPL"
 
 headline_df = pd.read_csv(f"filled_headline_sentiments{period}d.csv")
