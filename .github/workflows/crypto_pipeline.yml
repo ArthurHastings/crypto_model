@@ -47,7 +47,7 @@ jobs:
         run: ngrok version
 
       - name: Authenticate ngrok
-        run: ngrok config add-authtoken ${{ secrets.NGROK_AUTHTOKEN }}
+        run: ngrok authtoken ${{ secrets.NGROK_AUTHTOKEN }}
 
       - name: Start ngrok and expose model API
         run: |
@@ -92,7 +92,7 @@ jobs:
       #   run: python generate_csv.py
 
       - name: Authenticate 2nd ngrok
-        run: ngrok config add-authtoken ${{ secrets.NGROK_AUTHTOKEN_5001 }}
+        run: ngrok authtoken ${{ secrets.NGROK_AUTHTOKEN_5001 }}
 
       - name: Start ngrok and expose MLflow on 5003
         run: |
