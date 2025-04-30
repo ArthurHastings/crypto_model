@@ -37,46 +37,61 @@ jobs:
         run: |
           python deploy_model.py
 
-      - name: Install ngrok v2
+      - name: Install ngrok
         run: |
-          curl -sSL https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-amd64.zip -o ngrok.zip
-          unzip ngrok.zip
-          sudo mv ngrok /usr/local/bin
-      
-      - name: Check ngrok version
-        run: ngrok version
+          curl -s https://ngrok-agent.s3.amazonaws.com/ngrok.asc | sudo tee /etc/apt/trusted.gpg.d/ngrok.asc >/dev/null
+          echo "deb https://ngrok-agent.s3.amazonaws.com buster main" | sudo tee /etc/apt/sources.list.d/ngrok.list
+          sudo apt update && sudo apt install ngrok
+
+      - name: Create ngrok config file
+        run: |
+          mkdir -p ~/.ngrok2
+          cat <<EOF > ~/.ngrok2/ngrok.yml
+          authtoken: ${{ secrets.NGROK_AUTHTOKEN }}
+          version: "2"
+          tunnels:
+            model_api:
+              addr: 5002
+              proto: http
+            mlflow_ui:
+              addr: 5003
+              proto: http
+          web_addr: 127.0.0.1:4040
+          EOF
 
       - name: Authenticate ngrok
-        run: ngrok authtoken ${{ secrets.NGROK_AUTHTOKEN }}
-
-      - name: Start ngrok and expose model API
+        run: ngrok config add-authtoken ${{ secrets.NGROK_AUTHTOKEN }}
+      
+      - name: Start ngrok with multiple tunnels
         run: |
-          # Start ngrok in the background and expose your local model API (port 5002)
-          nohup ngrok http 5002 &
+          nohup ngrok start --all > ngrok.log &
 
-          # Wait for ngrok to initialize and ensure the public URL is ready
+      - name: Get public URLs from ngrok
+        run: |
           echo "Waiting for ngrok to initialize..."
           for i in {1..10}; do
-            PUBLIC_URL=$(curl -s http://localhost:4040/api/tunnels | jq -r '.tunnels[0].public_url')
-            echo "PUBLIC_URL=$PUBLIC_URL" >> $GITHUB_ENV
-            if [[ "$PUBLIC_URL" != "null" && -n "$PUBLIC_URL" ]]; then
-              echo "Public URL is ready: $PUBLIC_URL"
+            RESPONSE=$(curl -s http://127.0.0.1:4040/api/tunnels)
+            MODEL_URL=$(echo "$RESPONSE" | jq -r '.tunnels[] | select(.name=="model_api") | .public_url')
+            MLFLOW_URL=$(echo "$RESPONSE" | jq -r '.tunnels[] | select(.name=="mlflow_ui") | .public_url')
+
+            if [[ -n "$MODEL_URL" && "$MODEL_URL" != "null" && -n "$MLFLOW_URL" && "$MLFLOW_URL" != "null" ]]; then
+              echo "Model URL: $MODEL_URL"
+              echo "MLflow URL: $MLFLOW_URL"
+              echo "API_SENTIMENT_MODEL=$MODEL_URL/invocations" >> $GITHUB_ENV
+              echo "MLFLOW_NGROK=$MLFLOW_URL" >> $GITHUB_ENV
               break
             fi
             sleep 3
           done
 
-          if [[ -z "$PUBLIC_URL" ]]; then
-            echo "ngrok failed to provide a public URL."
-            exit 1
-          fi
-
-          # Debugging: Print the PUBLIC_URL
-          echo "Final PUBLIC_URL: $PUBLIC_URL"
+          # Debugging: Print the URLs
+          echo "Final Model URL: $MODEL_URL"
+          echo "Final MLflow URL: $MLFLOW_URL"
 
       - name: Set API URL environment variable
         run: |
           echo "API_SENTIMENT_MODEL=${{ env.PUBLIC_URL }}/invocations" >> $GITHUB_ENV
+          echo "MLFLOW_NGROK=${{ env.MLFLOW_URL }}" >> $GITHUB_ENV
 
       # -------------------------------------------------------------------------------------------
 
@@ -90,37 +105,6 @@ jobs:
 
       # - name: Combine final dataset
       #   run: python generate_csv.py
-
-      - name: Authenticate 2nd ngrok
-        run: ngrok authtoken ${{ secrets.NGROK_AUTHTOKEN_5001 }}
-
-      - name: Start ngrok and expose MLflow on 5003
-        run: |
-          # Start ngrok in the background and expose your local model API (port 5003)
-          nohup ngrok http 5003 --log=stdout --web-addr=:4041 > ngrok_mlflow.log &
-          
-          echo "Waiting for ngrok (MLflow) to initialize..."
-          for i in {1..10}; do
-            PUBLIC_URL_2=$(curl -s http://localhost:4041/api/tunnels | jq -r '.tunnels[0].public_url')
-            echo "PUBLIC_URL_2=$PUBLIC_URL_2" >> $GITHUB_ENV
-            if [[ "$PUBLIC_URL_2" != "null" && -n "$PUBLIC_URL_2" ]]; then
-              echo "MLflow Public URL is ready: $PUBLIC_URL_2"
-              break
-            fi
-            sleep 3
-          done
-
-          if [[ -z "$PUBLIC_URL_2" ]]; then
-            echo "ngrok failed to provide a public URL for MLflow."
-            exit 1
-          fi
-
-          # Debugging: Print the PUBLIC_URL_2
-          echo "Final PUBLIC_URL_2: $PUBLIC_URL_2"
-
-      - name: Set API URL environment variable
-        run: |
-          echo "MLFLOW_NGROK=${{ env.PUBLIC_URL_2 }}" >> $GITHUB_ENV
 
       - name: Predict tomorrow's price
         run: python price_model.py
