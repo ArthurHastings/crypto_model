@@ -23,7 +23,7 @@ X_train = X_train.reshape((X_train.shape[0], 1, X_train.shape[1]))
 X_test  = X_test.reshape((X_test.shape[0], 1, X_test.shape[1]))
 
 shap_sums = {name: 0 for name in ['Close', 'Open', 'High', 'Low', 'Volume', 'Negative', 'Neutral', 'Positive']}
-num_trials = 20
+num_trials = 3
 def objective(trial):
     optimizer_name  = trial.suggest_categorical("optimizer", ["adam", "adamw"])
     batch_size      = trial.suggest_categorical("batch_size", [32, 64, 128])

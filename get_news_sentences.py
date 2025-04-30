@@ -20,7 +20,7 @@ stock_symbol = "AAPL"
 headline_dict = {"Date": [], "Sentence": []}
 summary_dict = {"Date": [], "Sentence": []}
 
-period = 360
+period = 30
 
 with open("tokenizer.pkl", "rb") as f:
     tokenizer = pickle.load(f)
