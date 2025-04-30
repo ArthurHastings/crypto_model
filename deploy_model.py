@@ -1,5 +1,6 @@
 import subprocess
 import mlflow
+import time
 
 mlflow.set_tracking_uri("http://localhost:5003")
 
@@ -11,7 +12,9 @@ command = [
     "--env-manager", "local"
 ]
 
-subprocess.run(command)
+subprocess.Popen(command)
+
+time.sleep(10)
 
 
 # TO INSTALL PYENV
