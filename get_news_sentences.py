@@ -20,7 +20,7 @@ stock_symbol = "AAPL"
 headline_dict = {"Date": [], "Sentence": []}
 summary_dict = {"Date": [], "Sentence": []}
 
-period = 30
+period = 360
 
 with open("tokenizer.pkl", "rb") as f:
     tokenizer = pickle.load(f)
@@ -134,7 +134,7 @@ if __name__ == "__main__":
         "Positive": [pred[2] for pred in response_headline_sentiment["Sentence"]]
     })
     df_headlines.to_csv(f"headline_sentiments{period}d.csv", index=False)
-    print("Headline predictions saved to headline_sentiments.csv")
+    print(f"Headline predictions saved to headline_sentiments{period}d.csv")
 
     response_summary_sentiment = api_call(sentence_pad_dict_summary, batch_size=200)
     df_summary = pd.DataFrame({
@@ -145,4 +145,4 @@ if __name__ == "__main__":
         "Positive": [pred[2] for pred in response_summary_sentiment["Sentence"]]
     })
     df_summary.to_csv(f"summary_sentiments{period}d.csv", index=False)
-    print("Summary predictions saved to headline_sentiments.csv")
+    print(f"Summary predictions saved to summary_sentiments{period}d.csv")
