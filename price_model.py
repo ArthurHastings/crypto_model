@@ -4,7 +4,9 @@ from final_dataset_combine import period
 import optuna
 import shap
 
-mlflow.set_tracking_uri("https://ac1d-2a02-2f04-530c-c000-55ff-f109-30d0-e0f3.ngrok-free.app")
+mlflow_ngrok = os.getenv("MLFLOW_NGROK", "http://localhost:5001/")
+
+mlflow.set_tracking_uri(mlflow_ngrok)
 mlflow.set_experiment("PROIECT_CRYPTO_PRICEv8")
 
 
