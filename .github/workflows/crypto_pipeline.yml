@@ -54,7 +54,7 @@ jobs:
               addr: 5002
               proto: http
             mlflow_ui:
-              addr: 5001
+              addr: 5003
               proto: http
           web_addr: 127.0.0.1:4040
           EOF

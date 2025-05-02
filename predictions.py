@@ -6,7 +6,7 @@ import tensorflow as tf  # Needed for loading Keras models via MLflow
 from datetime import datetime
 import os
 
-api_sentiment_model = os.getenv("MLFLOW_NGROK", "http://localhost:5001")
+api_sentiment_model = os.getenv("MLFLOW_NGROK", "http://localhost:5003")
 mlflow.set_tracking_uri(api_sentiment_model)
 
 # List of registered model names
