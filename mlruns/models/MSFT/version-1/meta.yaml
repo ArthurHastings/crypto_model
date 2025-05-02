@@ -1,0 +1,14 @@
+aliases: []
+creation_timestamp: 1746198048095
+current_stage: None
+description: ''
+last_updated_timestamp: 1746198048095
+name: MSFT
+run_id: 951c4416319b41b497fd6e5c5df552b0
+run_link: ''
+source: mlflow-artifacts:/987438707044912639/951c4416319b41b497fd6e5c5df552b0/artifacts/lstm_model_trial_1
+status: READY
+status_message: null
+storage_location: mlflow-artifacts:/987438707044912639/951c4416319b41b497fd6e5c5df552b0/artifacts/lstm_model_trial_1
+user_id: null
+version: 1

@@ -1,0 +1,14 @@
+aliases: []
+creation_timestamp: 1746198119938
+current_stage: None
+description: ''
+last_updated_timestamp: 1746198119938
+name: NVDA
+run_id: 9cb7a264b3b24e34a881cc3662c8aff3
+run_link: ''
+source: mlflow-artifacts:/870025328328077837/9cb7a264b3b24e34a881cc3662c8aff3/artifacts/lstm_model_trial_3
+status: READY
+status_message: null
+storage_location: mlflow-artifacts:/870025328328077837/9cb7a264b3b24e34a881cc3662c8aff3/artifacts/lstm_model_trial_3
+user_id: null
+version: 1

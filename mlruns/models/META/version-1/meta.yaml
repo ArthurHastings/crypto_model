@@ -1,0 +1,14 @@
+aliases: []
+creation_timestamp: 1746198139176
+current_stage: None
+description: ''
+last_updated_timestamp: 1746198139176
+name: META
+run_id: c6ea1405caa24299b352ab88a700c8ba
+run_link: ''
+source: mlflow-artifacts:/533423262789988883/c6ea1405caa24299b352ab88a700c8ba/artifacts/lstm_model_trial_20
+status: READY
+status_message: null
+storage_location: mlflow-artifacts:/533423262789988883/c6ea1405caa24299b352ab88a700c8ba/artifacts/lstm_model_trial_20
+user_id: null
+version: 1

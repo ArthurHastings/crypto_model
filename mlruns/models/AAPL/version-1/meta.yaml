@@ -1,0 +1,14 @@
+aliases: []
+creation_timestamp: 1746198022800
+current_stage: None
+description: ''
+last_updated_timestamp: 1746198022800
+name: AAPL
+run_id: cb0add90c4874a33b71a7d3358c0085c
+run_link: ''
+source: mlflow-artifacts:/700963635651280293/cb0add90c4874a33b71a7d3358c0085c/artifacts/lstm_model_trial_4
+status: READY
+status_message: null
+storage_location: mlflow-artifacts:/700963635651280293/cb0add90c4874a33b71a7d3358c0085c/artifacts/lstm_model_trial_4
+user_id: null
+version: 1

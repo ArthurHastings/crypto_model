@@ -1,0 +1,14 @@
+aliases: []
+creation_timestamp: 1746198086149
+current_stage: None
+description: ''
+last_updated_timestamp: 1746198086149
+name: AMZN
+run_id: 51688bb36564411aabda68380dcbf65b
+run_link: ''
+source: mlflow-artifacts:/126201173998456926/51688bb36564411aabda68380dcbf65b/artifacts/lstm_model_trial_10
+status: READY
+status_message: null
+storage_location: mlflow-artifacts:/126201173998456926/51688bb36564411aabda68380dcbf65b/artifacts/lstm_model_trial_10
+user_id: null
+version: 1

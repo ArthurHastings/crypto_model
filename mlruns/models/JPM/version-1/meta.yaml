@@ -1,0 +1,14 @@
+aliases: []
+creation_timestamp: 1746198235351
+current_stage: None
+description: ''
+last_updated_timestamp: 1746198235351
+name: JPM
+run_id: 7877a10a0fad42bfa68e6e2148d40adb
+run_link: ''
+source: mlflow-artifacts:/986574245943130058/7877a10a0fad42bfa68e6e2148d40adb/artifacts/lstm_model_trial_24
+status: READY
+status_message: null
+storage_location: mlflow-artifacts:/986574245943130058/7877a10a0fad42bfa68e6e2148d40adb/artifacts/lstm_model_trial_24
+user_id: null
+version: 1

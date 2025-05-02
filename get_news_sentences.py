@@ -12,20 +12,18 @@ if not os.path.exists(os.path.join(nltk_data_path, 'tokenizers', 'punkt')):
     nltk.download('punkt', download_dir=nltk_data_path)
 
 from imports import *
+from generate_csvs import generate_csv
+from clean_headline_sentiment import clean_files
 
 api_key = "cvpq5t9r01qve7iqiis0cvpq5t9r01qve7iqiisg"
 # api_sentiment_model = "http://localhost:5002/invocations"
-api_sentiment_model = os.getenv("API_SENTIMENT_MODEL", "http://localhost:5002/invocations")
-stock_symbol = "AAPL"
-headline_dict = {"Date": [], "Sentence": []}
-summary_dict = {"Date": [], "Sentence": []}
 
-period = 30
+period = 360
 
 with open("tokenizer.pkl", "rb") as f:
     tokenizer = pickle.load(f)
 
-def api_call_batch(sentence_pad_list_batch):
+def api_call_batch(sentence_pad_list_batch, api_sentiment_model):
     batch_array = np.array(sentence_pad_list_batch)
     batch_array = np.squeeze(batch_array)
     
@@ -33,8 +31,8 @@ def api_call_batch(sentence_pad_list_batch):
     headers = {"Content-Type": "application/json"}
     
     response = requests.post(api_sentiment_model, data=json.dumps(data), headers=headers)
-    print("Response status code:", response.status_code)
-    print("Response text:", response.text[:500])
+    # print("Response status code:", response.status_code)
+    # print("Response text:", response.text[:500])
 
     try:
         response_json = response.json()
@@ -43,7 +41,7 @@ def api_call_batch(sentence_pad_list_batch):
         raise
     return response_json.get("predictions", [])
 
-def api_call(sentence_pad_dict: dict, batch_size=200):
+def api_call(sentence_pad_dict: dict, api_sentiment_model, batch_size=200):
     all_predictions = {"Date": [], "Sentence": []}
     total = len(sentence_pad_dict["Sentence"])
     
@@ -53,18 +51,22 @@ def api_call(sentence_pad_dict: dict, batch_size=200):
         batch_sentences = reversed_sentence_pad_dict["Sentence"][i: i + batch_size]
         batch_dates = reversed_sentence_pad_dict["Date"][i: i + batch_size]
         print(f"Processing batch {i} to {i + len(batch_sentences)} of {total}")
-        preds = api_call_batch(batch_sentences)
+        preds = api_call_batch(batch_sentences, api_sentiment_model)
         all_predictions["Sentence"].extend(preds)
         all_predictions["Date"].extend(batch_dates)
 
     return all_predictions
 
 
-def get_news(days: int):
-    for i in range(days // 10):
-        date_from = (datetime.now() - timedelta(days=10 * (i + 1))).strftime("%Y-%m-%d")
-        date_to   = (datetime.now() - timedelta(days=10 * i)).strftime("%Y-%m-%d")
-        url = f"https://finnhub.io/api/v1/company-news?symbol={stock_symbol}&from={date_from}&to={date_to}&token={api_key}"
+def get_news(days: int, symbol, api_key):
+    headline_dict = {"Date": [], "Sentence": []}
+    summary_dict = {"Date": [], "Sentence": []}
+    for i in range(0, days, 10):
+        days_to_subtract_start = i
+        days_to_subtract_end = min(i + 10, days)
+        date_from = (datetime.now() - timedelta(days=days_to_subtract_end)).strftime("%Y-%m-%d")
+        date_to   = (datetime.now() - timedelta(days=days_to_subtract_start)).strftime("%Y-%m-%d")
+        url = f"https://finnhub.io/api/v1/company-news?symbol={symbol}&from={date_from}&to={date_to}&token={api_key}"
         response_news = requests.get(url)
         news_data = response_news.json()
         print(f"Number of articles found between {date_from} to {date_to}: {len(news_data)}")
@@ -96,15 +98,9 @@ def get_news(days: int):
             max_length = title_len
         if summary_len > max_length:
             max_length = summary_len
-    return max_length
+    return max_length, headline_dict, summary_dict
 
-if __name__ == "__main__":
-    max_length = get_news(period)
-
-    # print(headline_dict["Sentence"][len(headline_dict["Sentence"]) - 50:])
-    # print("-----------" * 10)
-    # print(summary_dict["Sentence"][len(headline_dict["Sentence"]) - 50:])
-
+def preprocess_sentences(max_length, headline_dict, summary_dict):
     sentence_pad_dict_headline = {"Date": [], "Sentence": []}
     sentence_pad_dict_summary = {"Date": [], "Sentence": []}
     for i in range(len(headline_dict["Sentence"])):
@@ -123,26 +119,56 @@ if __name__ == "__main__":
         sentence_pad_dict_summary["Date"].append(headline_dict["Date"][i])
 
     print("Total headlines to process:", len(sentence_pad_dict_headline["Date"]))
-    
-    print(f"Using API URL: {api_sentiment_model}")  # Debugging line
-    response_headline_sentiment = api_call(sentence_pad_dict_headline, batch_size=200)
-    df_headlines = pd.DataFrame({
-        "Date": response_headline_sentiment["Date"],
-        "Headline": headline_dict["Sentence"][::-1],        
-        "Negative": [pred[0] for pred in response_headline_sentiment["Sentence"]],
-        "Neutral": [pred[1] for pred in response_headline_sentiment["Sentence"]],
-        "Positive": [pred[2] for pred in response_headline_sentiment["Sentence"]]
-    })
-    df_headlines.to_csv(f"headline_sentiments{period}d.csv", index=False)
-    print(f"Headline predictions saved to headline_sentiments{period}d.csv")
+    return sentence_pad_dict_headline, sentence_pad_dict_summary
 
-    response_summary_sentiment = api_call(sentence_pad_dict_summary, batch_size=200)
-    df_summary = pd.DataFrame({
-        "Date": response_summary_sentiment["Date"],
-        "Headline": summary_dict["Sentence"][::-1],        
-        "Negative": [pred[0] for pred in response_summary_sentiment["Sentence"]],
-        "Neutral": [pred[1] for pred in response_summary_sentiment["Sentence"]],
-        "Positive": [pred[2] for pred in response_summary_sentiment["Sentence"]]
+def create_dataset(response_sentiment, original_dict):
+    df = pd.DataFrame({
+        "Date": response_sentiment["Date"],
+        "Headline": original_dict["Sentence"][::-1],        
+        "Negative": [pred[0] for pred in response_sentiment["Sentence"]],
+        "Neutral": [pred[1] for pred in response_sentiment["Sentence"]],
+        "Positive": [pred[2] for pred in response_sentiment["Sentence"]]
     })
-    df_summary.to_csv(f"summary_sentiments{period}d.csv", index=False)
-    print(f"Summary predictions saved to summary_sentiments{period}d.csv")
+    return df
+
+def process_stock(symbol, api_sentiment_model):
+    global stock_symbol
+    stock_symbol = symbol
+
+    print(f"\n--- Processing {stock_symbol} ---")
+    max_length, headline_dict, summary_dict = get_news(period, symbol, api_key)
+
+    sentence_pad_dict_headline, sentence_pad_dict_summary = preprocess_sentences(max_length, headline_dict, summary_dict)
+
+    print(f"Using API URL: {api_sentiment_model}")
+    response_headline_sentiment = api_call(sentence_pad_dict_headline, api_sentiment_model,  batch_size=200)
+    df_headlines = create_dataset(response_headline_sentiment, headline_dict)
+
+    response_summary_sentiment = api_call(sentence_pad_dict_summary, api_sentiment_model, batch_size=200)
+    df_summary = create_dataset(response_summary_sentiment, summary_dict)
+
+    final_df_name = generate_csv(df_headlines, df_summary, period, stock_symbol)
+
+    new_df = pd.read_csv(final_df_name)
+    try:
+        os.remove(final_df_name)
+        print(f"Deleted: {final_df_name}")
+    except FileNotFoundError:
+        print(f"File not found for deletion: {final_df_name}")
+
+    new_df["Date"] = pd.to_datetime(new_df["Date"])
+    new_df["Date"] = new_df["Date"].dt.strftime("%Y-%m-%d")
+
+    out_name = f"{stock_symbol}_price_sentiment.csv"
+    new_df.to_csv(out_name, index=False)
+    print(f"Saved updated dataset with {len(new_df)} rows to: {out_name}")
+
+if __name__ == "__main__":
+    api_sentiment_model = os.getenv("API_SENTIMENT_MODEL", "http://localhost:5002/invocations")
+    # stock_symbols = ["AAPL", "MSFT", "GOOGL", "AMZN", "TSLA", "NVDA", "META", "NFLX", "INTC", "AMD", "BA", "JPM", "DIS", "V", "NKE"]
+    stock_symbols = ["INTC", "AMD", "BA", "JPM", "DIS", "V", "NKE"]
+
+    for symbol in stock_symbols:
+        process_stock(symbol, api_sentiment_model)
+        print(f"Waiting 2 minutes to avoid rate limits before next stock...")
+        time.sleep(120)

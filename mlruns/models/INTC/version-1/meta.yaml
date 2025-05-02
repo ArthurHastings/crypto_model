@@ -1,0 +1,14 @@
+aliases: []
+creation_timestamp: 1746198178463
+current_stage: None
+description: ''
+last_updated_timestamp: 1746198178463
+name: INTC
+run_id: e8602376655041ea9f0832174b022890
+run_link: ''
+source: mlflow-artifacts:/555129460130675546/e8602376655041ea9f0832174b022890/artifacts/lstm_model_trial_23
+status: READY
+status_message: null
+storage_location: mlflow-artifacts:/555129460130675546/e8602376655041ea9f0832174b022890/artifacts/lstm_model_trial_23
+user_id: null
+version: 1

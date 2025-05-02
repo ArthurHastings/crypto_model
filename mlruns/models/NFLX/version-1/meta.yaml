@@ -1,0 +1,14 @@
+aliases: []
+creation_timestamp: 1746198158058
+current_stage: None
+description: ''
+last_updated_timestamp: 1746198158058
+name: NFLX
+run_id: 8a0b5311228449b783ff719a241a2c5e
+run_link: ''
+source: mlflow-artifacts:/134390433828460059/8a0b5311228449b783ff719a241a2c5e/artifacts/lstm_model_trial_0
+status: READY
+status_message: null
+storage_location: mlflow-artifacts:/134390433828460059/8a0b5311228449b783ff719a241a2c5e/artifacts/lstm_model_trial_0
+user_id: null
+version: 1

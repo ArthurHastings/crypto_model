@@ -1,0 +1,14 @@
+aliases: []
+creation_timestamp: 1746198252025
+current_stage: None
+description: ''
+last_updated_timestamp: 1746198252025
+name: DIS
+run_id: a2ace21364aa4068ab2c26c7085b7936
+run_link: ''
+source: mlflow-artifacts:/829956239135233227/a2ace21364aa4068ab2c26c7085b7936/artifacts/lstm_model_trial_5
+status: READY
+status_message: null
+storage_location: mlflow-artifacts:/829956239135233227/a2ace21364aa4068ab2c26c7085b7936/artifacts/lstm_model_trial_5
+user_id: null
+version: 1

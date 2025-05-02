@@ -54,7 +54,7 @@ jobs:
               addr: 5002
               proto: http
             mlflow_ui:
-              addr: 5003
+              addr: 5001
               proto: http
           web_addr: 127.0.0.1:4040
           EOF
@@ -93,29 +93,27 @@ jobs:
           echo "API_SENTIMENT_MODEL=${{ env.API_SENTIMENT_MODEL }}" >> $GITHUB_ENV
           echo "MLFLOW_NGROK=${{ env.MLFLOW_NGROK }}" >> $GITHUB_ENV
 
-      # -------------------------------------------------------------------------------------------
-
-      - name: Run get_news_sentences.py
-        run: python get_news_sentences.py
+      - name: Run daily_run.py
+        run: python daily_run.py
         env:
           API_SENTIMENT_MODEL: ${{ env.API_SENTIMENT_MODEL }}
-
-      - name: Preprocess sentiments
-        run: python clean_headline_sentiment.py
-
-      - name: Combine final dataset
-        run: python generate_csv.py
-
+      
       - name: Predict tomorrow's price
-        run: python price_model.py
+        run: python predictions.py
         env:
           MLFLOW_NGROK: ${{ env.MLFLOW_NGROK }}
       
-      - name: Upload prediction result
-        uses: actions/upload-artifact@v4
-        with:
-          name: prediction_result
-          path: prediction_result.txt
+      - name: Commit and push updated CSVs
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add *.csv
+          git add predictions.txt
+          git commit -m "Daily CSV & predictions.txt update on $(date '+%Y-%m-%d')" || echo "No changes to commit"
+          git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}
+          git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 # 2vjKe8gcVkpxr6d6NW2uVeQm5VJ_4yWBF6Qu2MMLi2UarA4wT : 5002
 # 2wFydqD901sz9dzcxcfpfxocQvD_58Ex39kxnNgMR7gWiV8jL : 5001

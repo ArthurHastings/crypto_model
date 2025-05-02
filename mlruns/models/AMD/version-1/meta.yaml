@@ -1,0 +1,14 @@
+aliases: []
+creation_timestamp: 1746198203251
+current_stage: None
+description: ''
+last_updated_timestamp: 1746198203251
+name: AMD
+run_id: 24b359a9fb2748e8b0341ed5979683be
+run_link: ''
+source: mlflow-artifacts:/748051548809373692/24b359a9fb2748e8b0341ed5979683be/artifacts/lstm_model_trial_5
+status: READY
+status_message: null
+storage_location: mlflow-artifacts:/748051548809373692/24b359a9fb2748e8b0341ed5979683be/artifacts/lstm_model_trial_5
+user_id: null
+version: 1

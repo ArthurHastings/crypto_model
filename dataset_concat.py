@@ -12,7 +12,6 @@ import pandas as pd
 from nltk.tokenize import word_tokenize
 from nltk.stem import WordNetLemmatizer
 from nltk.corpus import stopwords
-from datasets import load_dataset
 import re
 
 lemmatizer = WordNetLemmatizer()
