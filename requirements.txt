@@ -213,3 +213,4 @@ xxhash==3.5.0
 yarl==1.18.3
 yfinance==0.2.55
 zipp==3.21.0
+pandas-market-calendars==4.4
