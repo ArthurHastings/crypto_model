@@ -1,24 +1,9 @@
-from alpha_vantage.timeseries import TimeSeries
-import pandas as pd
+import quandl
 
-API_KEY = '47FA2C8JICIFQCWG'
+API_KEY = 'X3-tTgpfWyNtfe6u9rHN'
 
-ts = TimeSeries(key=API_KEY, output_format='pandas')
+# Example: Fetch Apple stock price data
+data = quandl.get("WIKI/AAPL", api_key=API_KEY)
 
-data, _ = ts.get_daily(symbol="PLTR", outputsize='compact')
-
-data = data.rename(columns={
-    '1. open': 'Open',
-    '2. high': 'High',
-    '3. low': 'Low',
-    '4. close': 'Close',
-    '5. volume': 'Volume'
-})
-
-data = data.reset_index()
-data['date'] = pd.to_datetime(data['date'])
-data = data.sort_values('date', ascending=False)
-data = data[data['date'] >= pd.Timestamp.today() - pd.Timedelta(days=30)]
-data = data.sort_values('date')
-
-print(data)
+# Print the first few rows
+print(data.head())
