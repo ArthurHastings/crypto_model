@@ -1,5 +1,6 @@
 import os
 import nltk
+import time
 
 nltk_data_path = os.path.join(os.getcwd(), 'nltk_data')
 nltk.data.path.append(nltk_data_path)
@@ -68,5 +69,7 @@ for stock_symbol in stock_list:
 
         updated_df.to_csv(csv_path, index=False)
         print(f"✅ Updated {csv_path} with {len(filtered_df)} new rows.")
+        
+        time.sleep(3)
     except Exception as e:
         print(f"❌ Failed to update {stock_symbol}: {e}")
