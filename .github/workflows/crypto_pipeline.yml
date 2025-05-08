@@ -26,7 +26,7 @@ jobs:
         run: pip install -r requirements.txt
       
       - name: Check if market is open
-        run: python market_open_check.py
+        run: python check_if_market_open.py
         
       - name: Install NLTK
         run: |
@@ -54,7 +54,7 @@ jobs:
         run: |
           mkdir -p ~/.ngrok2
           cat <<EOF > ~/.ngrok2/ngrok.yml
-          authtoken: ${{ secrets.NGROK_AUTHTOKEN }}
+          authtoken: ${{ secrets.NGROK_AUTHTOKEN_5001 }}
           version: "2"
           tunnels:
             model_api:

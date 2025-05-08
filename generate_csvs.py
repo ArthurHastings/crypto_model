@@ -1,7 +1,10 @@
 import pandas as pd
-import yfinance as yf
 import os
+from datetime import datetime, timedelta
+from alpha_vantage.timeseries import TimeSeries
 from clean_headline_sentiment import clean_files
+
+API_KEY = 'YOUR_ALPHA_VANTAGE_API_KEY'  # Replace with your actual key
 
 def generate_csv(headline_df, summary_df, nr_days, stock_symbol):
     headline, summary = clean_files(headline_df, summary_df, stock_symbol)
@@ -21,8 +24,23 @@ def generate_csv(headline_df, summary_df, nr_days, stock_symbol):
     final_avg_sentiment['Neutral'] = (combined['Headline_Neutral'] + combined['Summary_Neutral']) / 2
     final_avg_sentiment['Positive'] = (combined['Headline_Positive'] + combined['Summary_Positive']) / 2
 
-    df_price = yf.download(stock_symbol, period=f"{nr_days}d", interval="1d").reset_index()
-    df_price.columns = ['Date', 'Close', 'High', 'Low', 'Open', 'Volume']
+    ts = TimeSeries(key=API_KEY, output_format='pandas')
+    data, _ = ts.get_daily(symbol=stock_symbol, outputsize='compact')
+
+    data = data.rename(columns={
+        '1. open': 'Open',
+        '2. high': 'High',
+        '3. low': 'Low',
+        '4. close': 'Close',
+        '5. volume': 'Volume'
+    })
+
+    data = data.reset_index()
+    data['Date'] = pd.to_datetime(data['date'])
+    data = data.drop(columns='date')
+
+    start_date = datetime.today() - timedelta(days=nr_days)
+    df_price = data[data['Date'] >= start_date].sort_values('Date').reset_index(drop=True)
 
     df_price['Target'] = (df_price['Close'].shift(-1) > df_price['Close']).astype(int)
 
@@ -46,5 +64,5 @@ def generate_csv(headline_df, summary_df, nr_days, stock_symbol):
             print(f"Deleted: {file}")
         except FileNotFoundError:
             print(f"File not found for deletion: {file}")
-    
+
     return temp_file

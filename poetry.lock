@@ -163,6 +163,22 @@ typing-extensions = ">=4.12"
 tz = ["tzdata"]
 
 [[package]]
+name = "alpha-vantage"
+version = "3.0.0"
+description = "Python module to get stock data from the Alpha Vantage Api"
+optional = false
+python-versions = "*"
+groups = ["main"]
+files = [
+    {file = "alpha_vantage-3.0.0-py3-none-any.whl", hash = "sha256:5c64b3a179cfcd68aa2166bacaf581758522fa4fe06392a0298847d49db9596f"},
+    {file = "alpha_vantage-3.0.0.tar.gz", hash = "sha256:f97fe2b8efad2da97580199d54f8556c8007053870c462d10b9eaa815186c484"},
+]
+
+[package.dependencies]
+aiohttp = "*"
+requests = "*"
+
+[[package]]
 name = "annotated-types"
 version = "0.7.0"
 description = "Reusable constraint types to use with typing.Annotated"
@@ -6484,4 +6500,4 @@ type = ["pytest-mypy"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.11,<3.13"
-content-hash = "3c48f8fbfe2f4fff0ec838affd433ea7a376dea1ed8f221924f7786e56361c8c"
+content-hash = "62f7cef32e09da6d3f6c29987728ad38fcd069023a48db5caff3d80cd569d0f9"
