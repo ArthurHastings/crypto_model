@@ -69,7 +69,13 @@ for stock_symbol in stock_list:
 
         updated_df.to_csv(csv_path, index=False)
         print(f"✅ Updated {csv_path} with {len(filtered_df)} new rows.")
-        
+
         time.sleep(3)
     except Exception as e:
+        for file in [f"{stock_symbol}_headline_cleaned.csv", f"{stock_symbol}_summary_cleaned.csv"]:
+            try:
+                os.remove(file)
+                print(f"Deleted: {file}")
+            except FileNotFoundError:
+                print(f"File not found for deletion: {file}")
         print(f"❌ Failed to update {stock_symbol}: {e}")
