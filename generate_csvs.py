@@ -4,8 +4,7 @@ from datetime import datetime, timedelta
 from alpha_vantage.timeseries import TimeSeries
 from clean_headline_sentiment import clean_files
 
-API_KEY = '47FA2C8JICIFQCWG'  # Replace with your actual key
-
+API_KEY = '47FA2C8JICIFQCWG'
 def generate_csv(headline_df, summary_df, nr_days, stock_symbol):
     headline, summary = clean_files(headline_df, summary_df, stock_symbol)
     headline_df_cleaned = pd.read_csv(headline)

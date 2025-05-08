@@ -214,3 +214,4 @@ yarl==1.18.3
 yfinance==0.2.55
 zipp==3.21.0
 pandas-market-calendars==4.4
+alpha-vantage==3.0.0
