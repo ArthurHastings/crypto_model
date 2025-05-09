@@ -57,7 +57,7 @@ jobs:
         run: |
           mkdir -p ~/.ngrok2
           cat <<EOF > ~/.ngrok2/ngrok.yml
-          authtoken: ${{ secrets.NGROK_AUTHTOKEN_5001 }}
+          authtoken: ${{ secrets.NGROK_AUTHTOKEN_3 }}
           version: "2"
           tunnels:
             model_api:
