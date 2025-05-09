@@ -23,8 +23,8 @@ api_sentiment_model = os.getenv("API_SENTIMENT_MODEL", "http://localhost:5002/in
 stock_list = ["AAPL", "MSFT", "GOOGL", "AMZN", "TSLA", "NVDA", "META", "NFLX", "INTC", "AMD", "BA", "JPM", "DIS", "V", "NKE"]
 
 for stock_symbol in stock_list:
-    print("Waiting 3 seconds...")
-    time.sleep(3)
+    print("Waiting 15 seconds...")
+    time.sleep(15)
     try:
         print(f"\n===== Processing {stock_symbol} =====")
 
