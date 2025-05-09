@@ -110,7 +110,7 @@ mlflow-skinny==2.21.2
 multidict==6.3.0
 multiprocess==0.70.16
 multitasking==0.0.11
-mysql-connector-python==8.0.32
+mysql-connector-python>=8.3.0
 namex==0.0.8
 nbclient==0.10.1
 nbconvert==7.16.4
@@ -141,7 +141,7 @@ plotnine==0.14.5
 prometheus_client==0.21.1
 prompt_toolkit==3.0.48
 propcache==0.3.1
-protobuf==3.20.3
+protobuf>=5.29.0,<6
 psutil==6.1.0
 ptyprocess==0.7.0
 pure_eval==0.2.3
