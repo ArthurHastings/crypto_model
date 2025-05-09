@@ -70,7 +70,7 @@ jobs:
           EOF
 
       - name: Authenticate ngrok
-        run: ngrok config add-authtoken ${{ secrets.NGROK_AUTHTOKEN }}
+        run: ngrok config add-authtoken ${{ secrets.NGROK_AUTHTOKEN_3 }}
       
       - name: Start ngrok with multiple tunnels
         run: |
