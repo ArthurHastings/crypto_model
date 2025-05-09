@@ -16,7 +16,9 @@ from imports import *
 from get_news_sentences import api_key, get_news, preprocess_sentences, api_call, api_call_batch, create_dataset
 from clean_headline_sentiment import clean_files
 from generate_csvs import generate_csv
+from tvDatafeed import TvDatafeed, Interval
 
+tv = TvDatafeed(username='SOLOMON_ROCKS', password='zazacox1234567!')
 api_sentiment_model = os.getenv("API_SENTIMENT_MODEL", "http://localhost:5002/invocations")
 stock_list = ["AAPL", "MSFT", "GOOGL", "AMZN", "TSLA", "NVDA", "META", "NFLX", "INTC", "AMD", "BA", "JPM", "DIS", "V", "NKE"]
 
@@ -53,7 +55,7 @@ for stock_symbol in stock_list:
         response_summary_sentiment = api_call(sentence_pad_dict_summary, api_sentiment_model, batch_size=200)
         df_summary = create_dataset(response_summary_sentiment, summary_dict)
 
-        temp_df_name = generate_csv(df_headlines, df_summary, nr_days, stock_symbol)
+        temp_df_name = generate_csv(df_headlines, df_summary, nr_days, stock_symbol, tv)
         new_df = pd.read_csv(temp_df_name)
         os.remove(temp_df_name)
         print(f"Deleted temp file: {temp_df_name}")

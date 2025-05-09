@@ -27,6 +27,9 @@ jobs:
       
       - name: Check if market is open
         run: python check_if_market_open.py
+
+      - name: Install tvDataFeed
+        run: pip install --upgrade --no-cache-dir git+https://github.com/rongardF/tvdatafeed.git
         
       - name: Install NLTK
         run: |

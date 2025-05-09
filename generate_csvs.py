@@ -1,9 +1,11 @@
+from symtable import Symbol
 import pandas as pd
 import yfinance as yf
 import os
 from clean_headline_sentiment import clean_files
+from tvDatafeed import TvDatafeed, Interval
 
-def generate_csv(headline_df, summary_df, nr_days, stock_symbol):
+def generate_csv(headline_df, summary_df, nr_days, stock_symbol, tv):
     headline, summary = clean_files(headline_df, summary_df, stock_symbol)
     headline_df_cleaned = pd.read_csv(headline)
     summary_df_cleaned = pd.read_csv(summary)
@@ -21,8 +23,22 @@ def generate_csv(headline_df, summary_df, nr_days, stock_symbol):
     final_avg_sentiment['Neutral'] = (combined['Headline_Neutral'] + combined['Summary_Neutral']) / 2
     final_avg_sentiment['Positive'] = (combined['Headline_Positive'] + combined['Summary_Positive']) / 2
 
-    df_price = yf.download(stock_symbol, period=f"{nr_days}d", interval="1d").reset_index()
-    df_price.columns = ['Date', 'Close', 'High', 'Low', 'Open', 'Volume']
+    df = tv.get_hist(symbol=stock_symbol, exchange='NASDAQ', interval=Interval.in_daily, n_bars=nr_days)
+
+    df = df.reset_index()
+
+    df = df.rename(columns={
+        'datetime': 'Date',
+        'close': 'Close',
+        'high': 'High',
+        'low': 'Low',
+        'open': 'Open',
+        'volume': 'Volume'
+    })
+
+    df = df[['Date', 'Close', 'High', 'Low', 'Open', 'Volume']]
+
+    df['Date'] = df['Date'].dt.strftime('%Y-%m-%d')
 
     df_price['Target'] = (df_price['Close'].shift(-1) > df_price['Close']).astype(int)
 
