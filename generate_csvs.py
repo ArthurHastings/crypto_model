@@ -22,12 +22,11 @@ def generate_csv(headline_df, summary_df, nr_days, stock_symbol, tv):
     final_avg_sentiment['Negative'] = (combined['Headline_Negative'] + combined['Summary_Negative']) / 2
     final_avg_sentiment['Neutral'] = (combined['Headline_Neutral'] + combined['Summary_Neutral']) / 2
     final_avg_sentiment['Positive'] = (combined['Headline_Positive'] + combined['Summary_Positive']) / 2
+    df_price = tv.get_hist(symbol=stock_symbol, exchange='NASDAQ', interval=Interval.in_daily, n_bars=nr_days)
 
-    df = tv.get_hist(symbol=stock_symbol, exchange='NASDAQ', interval=Interval.in_daily, n_bars=nr_days)
+    df_price = df_price.reset_index()
 
-    df = df.reset_index()
-
-    df = df.rename(columns={
+    df_price = df_price.rename(columns={
         'datetime': 'Date',
         'close': 'Close',
         'high': 'High',
@@ -36,13 +35,16 @@ def generate_csv(headline_df, summary_df, nr_days, stock_symbol, tv):
         'volume': 'Volume'
     })
 
-    df = df[['Date', 'Close', 'High', 'Low', 'Open', 'Volume']]
 
-    df['Date'] = df['Date'].dt.strftime('%Y-%m-%d')
+    df_price = df_price[['Date', 'Close', 'High', 'Low', 'Open', 'Volume']]
 
+    df_price['Date'] = df_price['Date'].dt.strftime('%Y-%m-%d')
+
+    print(df_price.head())
     df_price['Target'] = (df_price['Close'].shift(-1) > df_price['Close']).astype(int)
 
     df_price["Date"] = pd.to_datetime(df_price["Date"])
+
     final_avg_sentiment["Date"] = pd.to_datetime(final_avg_sentiment["Date"])
     min_sentiment_date = final_avg_sentiment["Date"].min()
     df_price = df_price[df_price["Date"] >= min_sentiment_date].reset_index(drop=True)

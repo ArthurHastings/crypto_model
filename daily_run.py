@@ -23,6 +23,8 @@ api_sentiment_model = os.getenv("API_SENTIMENT_MODEL", "http://localhost:5002/in
 stock_list = ["AAPL", "MSFT", "GOOGL", "AMZN", "TSLA", "NVDA", "META", "NFLX", "INTC", "AMD", "BA", "JPM", "DIS", "V", "NKE"]
 
 for stock_symbol in stock_list:
+    print("Waiting 3 seconds...")
+    time.sleep(3)
     try:
         print(f"\n===== Processing {stock_symbol} =====")
 
@@ -51,11 +53,12 @@ for stock_symbol in stock_list:
 
         response_headline_sentiment = api_call(sentence_pad_dict_headline, api_sentiment_model, batch_size=200)
         df_headlines = create_dataset(response_headline_sentiment, headline_dict)
-
+        
         response_summary_sentiment = api_call(sentence_pad_dict_summary, api_sentiment_model, batch_size=200)
         df_summary = create_dataset(response_summary_sentiment, summary_dict)
 
         temp_df_name = generate_csv(df_headlines, df_summary, nr_days, stock_symbol, tv)
+        print("ZAZA" * 40)
         new_df = pd.read_csv(temp_df_name)
         os.remove(temp_df_name)
         print(f"Deleted temp file: {temp_df_name}")
@@ -71,8 +74,6 @@ for stock_symbol in stock_list:
 
         updated_df.to_csv(csv_path, index=False)
         print(f"✅ Updated {csv_path} with {len(filtered_df)} new rows.")
-
-        time.sleep(3)
     except Exception as e:
         for file in [f"{stock_symbol}_headline_cleaned.csv", f"{stock_symbol}_summary_cleaned.csv"]:
             try:
