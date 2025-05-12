@@ -22,6 +22,7 @@ def generate_csv(headline_df, summary_df, nr_days, stock_symbol, tv):
     final_avg_sentiment['Negative'] = (combined['Headline_Negative'] + combined['Summary_Negative']) / 2
     final_avg_sentiment['Neutral'] = (combined['Headline_Neutral'] + combined['Summary_Neutral']) / 2
     final_avg_sentiment['Positive'] = (combined['Headline_Positive'] + combined['Summary_Positive']) / 2
+    
     df_price = tv.get_hist(symbol=stock_symbol, exchange='NASDAQ', interval=Interval.in_daily, n_bars=nr_days)
 
     df_price = df_price.reset_index()

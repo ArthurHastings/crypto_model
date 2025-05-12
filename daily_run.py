@@ -24,7 +24,7 @@ stock_list = ["AAPL", "MSFT", "GOOGL", "AMZN", "TSLA", "NVDA", "META", "NFLX", "
 
 for stock_symbol in stock_list:
     print("Waiting 15 seconds...")
-    time.sleep(15)
+    time.sleep(40)
     try:
         print(f"\n===== Processing {stock_symbol} =====")
 
