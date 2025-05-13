@@ -9,7 +9,6 @@ import os
 api_sentiment_model = os.getenv("MLFLOW_NGROK", "http://localhost:5003")
 mlflow.set_tracking_uri(api_sentiment_model)
 
-# List of registered model names
 stock_models = {
     "AAPL": "AAPL",
     "MSFT": "MSFT",
@@ -28,7 +27,6 @@ stock_models = {
     "NKE":"NKE"
 }
 
-# Load today's/latest data (same preprocessing as training)
 def load_latest_data(stock_symbol):
     df = pd.read_csv(f"{stock_symbol}_price_sentiment.csv")
     latest = df.iloc[-1:]  # last row
