@@ -2,8 +2,8 @@ from tvDatafeed import TvDatafeed, Interval
 import pandas as pd
 
 tv = TvDatafeed(username='SOLOMON_ROCKS', password='zazacox1234567!')
-
-df = tv.get_hist(symbol='AAPL', exchange='NASDAQ', interval=Interval.in_daily, n_bars=5)
+# "BA", "JPM", "DIS", "V", "NKE
+df = tv.get_hist(symbol='NKE', exchange='NYSE', interval=Interval.in_daily, n_bars=5)
 
 df = df.reset_index()
 
