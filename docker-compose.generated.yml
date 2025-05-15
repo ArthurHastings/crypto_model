@@ -1,0 +1,144 @@
+services:
+  model1:
+    image: solomonrocks/crypto_sentiment_model:latest
+    container_name: model1
+    ports:
+      - "3001:5001"
+    environment:
+      - MLFLOW_TRACKING_URI=https://98ae-2a02-2f04-530c-c000-4c69-6835-b8e-36ac.ngrok-free.app
+      - MODEL_NAME=crypto_sentiment_model_1
+
+  model2:
+    image: solomonrocks/crypto_sentiment_model:latest
+    container_name: model2
+    ports:
+      - "3002:5001"
+    environment:
+      - MLFLOW_TRACKING_URI=https://98ae-2a02-2f04-530c-c000-4c69-6835-b8e-36ac.ngrok-free.app
+      - MODEL_NAME=AAPL
+
+  model3:
+    image: solomonrocks/crypto_sentiment_model:latest
+    container_name: model3
+    ports:
+      - "3003:5001"
+    environment:
+      - MLFLOW_TRACKING_URI=https://98ae-2a02-2f04-530c-c000-4c69-6835-b8e-36ac.ngrok-free.app
+      - MODEL_NAME=AMD
+
+  model4:
+    image: solomonrocks/crypto_sentiment_model:latest
+    container_name: model4
+    ports:
+      - "3004:5001"
+    environment:
+      - MLFLOW_TRACKING_URI=https://98ae-2a02-2f04-530c-c000-4c69-6835-b8e-36ac.ngrok-free.app
+      - MODEL_NAME=AMZN
+
+  model5:
+    image: solomonrocks/crypto_sentiment_model:latest
+    container_name: model5
+    ports:
+      - "3005:5001"
+    environment:
+      - MLFLOW_TRACKING_URI=https://98ae-2a02-2f04-530c-c000-4c69-6835-b8e-36ac.ngrok-free.app
+      - MODEL_NAME=BA
+
+  model6:
+    image: solomonrocks/crypto_sentiment_model:latest
+    container_name: model6
+    ports:
+      - "3006:5001"
+    environment:
+      - MLFLOW_TRACKING_URI=https://98ae-2a02-2f04-530c-c000-4c69-6835-b8e-36ac.ngrok-free.app
+      - MODEL_NAME=DIS
+
+  model7:
+    image: solomonrocks/crypto_sentiment_model:latest
+    container_name: model7
+    ports:
+      - "3007:5001"
+    environment:
+      - MLFLOW_TRACKING_URI=https://98ae-2a02-2f04-530c-c000-4c69-6835-b8e-36ac.ngrok-free.app
+      - MODEL_NAME=GOOGL
+
+  model8:
+    image: solomonrocks/crypto_sentiment_model:latest
+    container_name: model8
+    ports:
+      - "3008:5001"
+    environment:
+      - MLFLOW_TRACKING_URI=https://98ae-2a02-2f04-530c-c000-4c69-6835-b8e-36ac.ngrok-free.app
+      - MODEL_NAME=INTC
+
+  model9:
+    image: solomonrocks/crypto_sentiment_model:latest
+    container_name: model9
+    ports:
+      - "3009:5001"
+    environment:
+      - MLFLOW_TRACKING_URI=https://98ae-2a02-2f04-530c-c000-4c69-6835-b8e-36ac.ngrok-free.app
+      - MODEL_NAME=JPM
+
+  model10:
+    image: solomonrocks/crypto_sentiment_model:latest
+    container_name: model10
+    ports:
+      - "3010:5001"
+    environment:
+      - MLFLOW_TRACKING_URI=https://98ae-2a02-2f04-530c-c000-4c69-6835-b8e-36ac.ngrok-free.app
+      - MODEL_NAME=META
+
+  model11:
+    image: solomonrocks/crypto_sentiment_model:latest
+    container_name: model11
+    ports:
+      - "3011:5001"
+    environment:
+      - MLFLOW_TRACKING_URI=https://98ae-2a02-2f04-530c-c000-4c69-6835-b8e-36ac.ngrok-free.app
+      - MODEL_NAME=MSFT
+
+  model12:
+    image: solomonrocks/crypto_sentiment_model:latest
+    container_name: model12
+    ports:
+      - "3012:5001"
+    environment:
+      - MLFLOW_TRACKING_URI=https://98ae-2a02-2f04-530c-c000-4c69-6835-b8e-36ac.ngrok-free.app
+      - MODEL_NAME=NFLX
+
+  model13:
+    image: solomonrocks/crypto_sentiment_model:latest
+    container_name: model13
+    ports:
+      - "3013:5001"
+    environment:
+      - MLFLOW_TRACKING_URI=https://98ae-2a02-2f04-530c-c000-4c69-6835-b8e-36ac.ngrok-free.app
+      - MODEL_NAME=NKE
+
+  model14:
+    image: solomonrocks/crypto_sentiment_model:latest
+    container_name: model14
+    ports:
+      - "3014:5001"
+    environment:
+      - MLFLOW_TRACKING_URI=https://98ae-2a02-2f04-530c-c000-4c69-6835-b8e-36ac.ngrok-free.app
+      - MODEL_NAME=NVDA
+
+  model15:
+    image: solomonrocks/crypto_sentiment_model:latest
+    container_name: model15
+    ports:
+      - "3015:5001"
+    environment:
+      - MLFLOW_TRACKING_URI=https://98ae-2a02-2f04-530c-c000-4c69-6835-b8e-36ac.ngrok-free.app
+      - MODEL_NAME=TSLA
+
+  model16:
+    image: solomonrocks/crypto_sentiment_model:latest
+    container_name: model16
+    ports:
+      - "3016:5001"
+    environment:
+      - MLFLOW_TRACKING_URI=https://98ae-2a02-2f04-530c-c000-4c69-6835-b8e-36ac.ngrok-free.app
+      - MODEL_NAME=V

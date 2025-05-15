@@ -42,7 +42,7 @@ def load_latest_data(stock_symbol):
     return x_scaled.reshape((1, 1, x_scaled.shape[1]))
 
 with open("predictions.txt", "a") as f:
-    f.write(f"\n--- Predictions for {datetime.now().strftime('%Y-%m-%d %H:%M:%S')} ---\n")
+    f.write(f"\n--- Predictions from {datetime.now().strftime('%Y-%m-%d')} ---\n")
 
     for stock_symbol, model_name in stock_models.items():
             print(f"Loading model for {stock_symbol}\n")
