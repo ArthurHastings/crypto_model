@@ -29,7 +29,7 @@ stock_models = {
 
 def load_latest_data(stock_symbol):
     df = pd.read_csv(f"{stock_symbol}_price_sentiment.csv")
-    latest = df.iloc[-1:]  # last row
+    latest = df.iloc[-1:]
 
     features = ['Close', 'Open', 'High', 'Low', 'Volume', 'Negative', 'Neutral', 'Positive']
     x = latest[features]
