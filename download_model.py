@@ -18,7 +18,7 @@ model_names = [
     "MSFT",
     "NFLX",
     "NKE",
-    "NVA",
+    "NVDA",
     "TSLA",
     "V"
 ]
