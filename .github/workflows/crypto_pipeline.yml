@@ -34,6 +34,9 @@ jobs:
       
       - name: Check if market is open
         run: poetry run python check_if_market_open.py
+      
+      - name: Install NLTK
+        run: poetry run pip install nltk
         
       - name: Download NLTK data
         run: |
