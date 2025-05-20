@@ -30,7 +30,7 @@ jobs:
         run: echo "${HOME}/.local/bin" >> $GITHUB_PATH
 
       - name: Install dependencies with Poetry
-        run: poetry install
+        run: poetry install --no-root
       
       - name: Check if market is open
         run: poetry run python check_if_market_open.py
