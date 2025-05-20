@@ -8,7 +8,7 @@ authors = [
 readme = "README.md"
 requires-python = ">=3.11,<3.13"
 dependencies = [
-    "tvDatafeed @ git+https://github.com/StreamAlpha/tvdatafeed.git",
+    "tvDatafeed @ git+https://github.com/rongardF/tvdatafeed.git",
     "absl-py ==2.1.0",
     "aiohappyeyeballs ==2.6.1",
     "aiohttp ==3.11.15",
