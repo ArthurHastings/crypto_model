@@ -54,9 +54,10 @@ def generate_csv(headline_df, summary_df, nr_days, stock_symbol, tv):
     df_price = df_price[df_price["Date"] >= min_sentiment_date].reset_index(drop=True)
 
     df_price = pd.merge(df_price, final_avg_sentiment, on='Date', how='left')
-    df_price['Negative'].fillna(0, inplace=True)
-    df_price['Neutral'].fillna(0, inplace=True)
-    df_price['Positive'].fillna(0, inplace=True)
+    df_price['Negative'] = df_price['Negative'].fillna(0)
+    df_price['Neutral'] = df_price['Neutral'].fillna(0)
+    df_price['Positive'] = df_price['Positive'].fillna(0)
+
 
     temp_file = f"{stock_symbol}_temp_price_sentiment.csv"
     df_price.to_csv(temp_file, index=False)

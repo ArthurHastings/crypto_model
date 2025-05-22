@@ -21,14 +21,16 @@ def clean_files(df_headline_received, df_summary_received, stock_symbol):
     df_full_headline = full_dates_df.merge(df_headline, on='Date', how='left')
     df_full_summary = full_dates_df.merge(df_summary, on='Date', how='left')
 
-    df_full_headline['Headline'].fillna('No article', inplace=True)
-    df_full_headline['Negative'].fillna(0, inplace=True)
-    df_full_headline['Neutral'].fillna(1, inplace=True)
-    df_full_headline['Positive'].fillna(0, inplace=True)
-    df_full_summary['Headline'].fillna('No article', inplace=True)
-    df_full_summary['Negative'].fillna(0, inplace=True)
-    df_full_summary['Neutral'].fillna(1, inplace=True)
-    df_full_summary['Positive'].fillna(0, inplace=True)
+    df_full_headline['Headline'] = df_full_headline['Headline'].fillna('No article')
+    df_full_headline['Negative'] = df_full_headline['Negative'].fillna(0)
+    df_full_headline['Neutral'] = df_full_headline['Neutral'].fillna(1)
+    df_full_headline['Positive'] = df_full_headline['Positive'].fillna(0)
+
+    df_full_summary['Headline'] = df_full_summary['Headline'].fillna('No article')
+    df_full_summary['Negative'] = df_full_summary['Negative'].fillna(0)
+    df_full_summary['Neutral'] = df_full_summary['Neutral'].fillna(1)
+    df_full_summary['Positive'] = df_full_summary['Positive'].fillna(0)
+
 
     df_full_headline.to_csv(f"{stock_symbol}_headline_cleaned.csv", index=False)
     df_full_summary.to_csv(f"{stock_symbol}_summary_cleaned.csv", index=False)
