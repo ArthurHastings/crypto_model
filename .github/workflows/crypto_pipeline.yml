@@ -63,7 +63,7 @@ jobs:
         run: |
           mkdir -p ~/.ngrok2
           cat <<EOF > ~/.ngrok2/ngrok.yml
-          authtoken: ${{ secrets.NGROK_AUTHTOKEN_GMAIL }}
+          authtoken: ${{ secrets.NGROK_AUTHTOKEN_MIRCEA }}
           version: "2"
           tunnels:
             model_api:
@@ -76,7 +76,7 @@ jobs:
           EOF
 
       - name: Authenticate ngrok
-        run: ngrok config add-authtoken ${{ secrets.NGROK_AUTHTOKEN_GMAIL }}
+        run: ngrok config add-authtoken ${{ secrets.NGROK_AUTHTOKEN_MIRCEA }}
       
       - name: Start ngrok with multiple tunnels
         run: |
