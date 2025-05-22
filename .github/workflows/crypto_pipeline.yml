@@ -21,20 +21,26 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: '3.11.0'
+      
+      - name: Install Poetry
+        run: |
+          curl -sSL https://install.python-poetry.org | python3 -
+      
+      - name: Configure Poetry path
+        run: echo "${HOME}/.local/bin" >> $GITHUB_PATH
 
-      - name: Install dependencies
-        run: pip install -r requirements.txt
+      - name: Install dependencies with Poetry
+        run: poetry install --no-root
       
       - name: Check if market is open
-        run: python check_if_market_open.py
-
-      - name: Install tvDataFeed
-        run: pip install --upgrade --no-cache-dir git+https://github.com/rongardF/tvdatafeed.git
-        
+        run: poetry run python check_if_market_open.py
+      
       - name: Install NLTK
+        run: poetry run pip install nltk
+        
+      - name: Download NLTK data
         run: |
-          pip install nltk
-          python -c "import nltk, os; path=os.path.join(os.getcwd(), 'nltk_data'); nltk.download('punkt', download_dir=path); nltk.download('stopwords', download_dir=path); nltk.download('wordnet', download_dir=path)"
+          poetry run python -c "import nltk, os; path=os.path.join(os.getcwd(), 'nltk_data'); nltk.download('punkt', download_dir=path); nltk.download('stopwords', download_dir=path); nltk.download('wordnet', download_dir=path)"
 
       - name: Set NLTK_DATA environment variable
         run: echo "NLTK_DATA=/usr/local/share/nltk_data" >> $GITHUB_ENV
@@ -45,7 +51,7 @@ jobs:
       
       - name: Deploy Model on port 5002
         run: |
-          python deploy_model.py
+          poetry run python deploy_model.py
 
       - name: Install ngrok
         run: |
@@ -104,12 +110,12 @@ jobs:
           echo "MLFLOW_NGROK=${{ env.MLFLOW_NGROK }}" >> $GITHUB_ENV
 
       - name: Run daily_run.py
-        run: python daily_run.py
+        run: poetry run python daily_run.py
         env:
           API_SENTIMENT_MODEL: ${{ env.API_SENTIMENT_MODEL }}
       
       - name: Predict tomorrow's price
-        run: python predictions.py
+        run: poetry run python predictions.py
         env:
           MLFLOW_NGROK: ${{ env.MLFLOW_NGROK }}
       

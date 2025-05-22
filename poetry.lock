@@ -5954,6 +5954,28 @@ docs = ["myst-parser", "pydata-sphinx-theme", "sphinx"]
 test = ["argcomplete (>=3.0.3)", "mypy (>=1.7.0)", "pre-commit", "pytest (>=7.0,<8.2)", "pytest-mock", "pytest-mypy-testing"]
 
 [[package]]
+name = "tvdatafeed"
+version = "2.1.0"
+description = "TradingView historical data downloader"
+optional = false
+python-versions = "*"
+groups = ["main"]
+files = []
+develop = false
+
+[package.dependencies]
+pandas = "*"
+requests = "*"
+setuptools = "*"
+websocket-client = "*"
+
+[package.source]
+type = "git"
+url = "https://github.com/rongardF/tvdatafeed.git"
+reference = "HEAD"
+resolved_reference = "e6f6aaa7de439ac6e454d9b26d2760ded8dc4923"
+
+[[package]]
 name = "types-python-dateutil"
 version = "2.9.0.20241206"
 description = "Typing stubs for python-dateutil"
@@ -6561,4 +6583,4 @@ type = ["pytest-mypy"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.11,<3.13"
-content-hash = "32c7a02d9c45510b4503c6416745668f8f6aa4d371ca90deac35af3709835144"
+content-hash = "a90f392700d2d1d5d7a350e95d38c4de1586bbd0137ceab3e28184821cb877db"
