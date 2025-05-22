@@ -20,7 +20,6 @@ for ($i = 0; $i -lt 30; $i++) {
             }
         }
     } catch {
-        # ngrok might not be ready yet
         Start-Sleep -Seconds 1
         continue
     }
@@ -40,5 +39,4 @@ $dockerGeneratedPath = "$projectPath/docker-compose.generated.yml"
 
 (Get-Content $dockerTemplatePath) -replace "NGROK_URL_PLACEHOLDER", $ngrokUrl | Set-Content $dockerGeneratedPath
 
-# Run docker-compose using the generated file
 docker-compose -f $dockerGeneratedPath up -d

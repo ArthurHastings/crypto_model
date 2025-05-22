@@ -1,20 +1,25 @@
 from imports import *
-from final_dataset_combine import period
 import optuna
 
-stock_list = ["AAPL", "MSFT", "GOOGL", "AMZN", "TSLA", "NVDA", "META", "NFLX", "INTC", "AMD", "BA", "JPM", "DIS", "V", "NKE"]
-mlflow_ngrok = os.getenv("MLFLOW_NGROK", "http://localhost:5001")
+stock_list = ["AAPL"]
+# stock_list = ["AAPL", "MSFT", "GOOGL", "AMZN", "TSLA", "NVDA", "META", "NFLX", "INTC", "AMD", "BA", "JPM", "DIS", "V", "NKE"]
+mlflow_ngrok = os.getenv("MLFLOW_NGROK", "http://localhost:5000")
 mlflow.set_tracking_uri(mlflow_ngrok)
 print(f"MLFLOW URL: {mlflow_ngrok}")
 
 for stock_symbol in stock_list:
 
-    mlflow.set_experiment(f"MODEL_{stock_symbol}v1")
+    mlflow.set_experiment(f"MODEL_{stock_symbol}v8")
 
     data = pd.read_csv(f"{stock_symbol}_price_sentiment.csv")
+    data['Return'] = data['Close'].pct_change().fillna(0)
+    data['Volume_Change'] = data['Volume'].pct_change().fillna(0)
+    data['Target'] = (data['Close'].shift(-1) > data['Close']).astype(int)
     data = data[:-1]
 
-    X = data[['Close', 'Open', 'High', 'Low', 'Volume', 'Negative', 'Neutral', 'Positive']]
+    data.to_csv("zaza.csv", index=False)
+
+    X = data[['Close', 'Open', 'Volume', "High", "Low", 'Negative', 'Neutral', 'Positive', "Return", "Volume_Change"]]
     y = data['Target']
 
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=68)
@@ -24,12 +29,13 @@ for stock_symbol in stock_list:
 
     X_train = X_train.reshape((X_train.shape[0], 1, X_train.shape[1]))
     X_test = X_test.reshape((X_test.shape[0], 1, X_test.shape[1]))
+    
 
-    num_trials = 25
+    num_trials = 100
 
     def objective(trial):
         optimizer_name = trial.suggest_categorical("optimizer", ["adam", "adamw"])
-        batch_size = trial.suggest_categorical("batch_size", [32, 64, 128])
+        batch_size = trial.suggest_categorical("batch_size", [8, 16, 32, 64, 128])
         epochs = trial.suggest_int("epochs", 100, 300, step=50)
         neurons = trial.suggest_categorical("neurons", [64, 128, 256])
         dropout_rate = trial.suggest_float("dropout", 0.2, 0.5)
@@ -59,7 +65,7 @@ for stock_symbol in stock_list:
             opt = tf.optimizers.Adam(learning_rate=learning_rate) if optimizer_name == "adam" else tf.optimizers.AdamW(learning_rate=learning_rate)
             model.compile(optimizer=opt, loss='binary_crossentropy', metrics=['accuracy'])
 
-            early_stopping = EarlyStopping(monitor='val_loss', patience=10, restore_best_weights=True)
+            early_stopping = EarlyStopping(monitor='val_accuracy', mode="max", patience=25, restore_best_weights=True)
 
             start = time.time()
             history = model.fit(
@@ -96,3 +102,5 @@ for stock_symbol in stock_list:
         print(f"  Value (best_val_accuracy): {study.best_trial.value:.4f}")
         for key, val in study.best_trial.params.items():
             print(f"  {key}: {val}")
+
+# cu optuna sa fac numarul de layere dinamic

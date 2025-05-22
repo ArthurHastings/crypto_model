@@ -1,10 +1,24 @@
+import os
+import nltk
+import time
+
+nltk_data_path = os.path.join(os.getcwd(), 'nltk_data')
+nltk.data.path.append(nltk_data_path)
+
+if not os.path.exists(os.path.join(nltk_data_path, 'corpora', 'stopwords')):
+    nltk.download('stopwords', download_dir=nltk_data_path)
+if not os.path.exists(os.path.join(nltk_data_path, 'corpora', 'wordnet')):
+    nltk.download('wordnet', download_dir=nltk_data_path)
+if not os.path.exists(os.path.join(nltk_data_path, 'tokenizers', 'punkt')):
+    nltk.download('punkt', download_dir=nltk_data_path)
+
 import mlflow
 import numpy as np
 import pandas as pd
 from sklearn.preprocessing import StandardScaler
-import tensorflow as tf  # Needed for loading Keras models via MLflow
+import tensorflow as tf
 from datetime import datetime
-import os
+
 
 api_sentiment_model = os.getenv("MLFLOW_NGROK", "http://localhost:5003")
 mlflow.set_tracking_uri(api_sentiment_model)

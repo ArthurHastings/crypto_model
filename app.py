@@ -4,7 +4,7 @@ import re
 import json
 import os
 
-PREDICTIONS_FILE = "predictions.txt"
+PREDICTIONS_FILE = "predictions_temp.txt"
 PORTFOLIO_FILE = "portfolio.json"
 CONFIDENCE_THRESHOLD = 0.65
 SIMULATED_RETURN = 0.01
@@ -15,7 +15,7 @@ class PaperTradingApp:
         self.root.title("Paper Trading Simulator")
         self.cash = 0.0
         self.portfolio = {}
-        self.total_capital = 0.0  # sum of cash + portfolio invested
+        self.total_capital = 0.0
 
         self.setup_ui()
         self.load_portfolio()
