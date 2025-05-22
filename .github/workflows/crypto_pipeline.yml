@@ -47,7 +47,7 @@ jobs:
 
       - name: Start MLflow model server on port 5003
         run: |
-          nohup mlflow server --host 0.0.0.0 --port 5003 &> mlflow.log &
+          nohup poetry run mlflow server --host 0.0.0.0 --port 5003 &> mlflow.log &
       
       - name: Deploy Model on port 5002
         run: |
