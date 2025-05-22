@@ -60,12 +60,13 @@ def load_from_date(stock_symbol, date):
     return x_scaled.reshape((x_scaled.shape[0], 1, x_scaled.shape[1])), present_data['Date'].tolist()
 
 
-# 2025-05-01
+# pui toate datele pe care vrei sa ti le genereze de prezis pana la to_date (pui ultima data de care ai
+# nevoie ex: pui 2025-05-22 daca ai nevoie de date pana 2025-05-21 inclusiv)
 cont = 0
-day_list = ["01", "02", "05", "06", "07", "08", "09", "12"]
+day_list = ["21", "22"]
 from_date_str = f"2025-05-{day_list[cont]}"
 from_date = pd.to_datetime(from_date_str)
-to_date = pd.to_datetime("2025-05-12")
+to_date = pd.to_datetime("2025-05-22")
 
 while from_date != to_date:
     from_date_str = f"2025-05-{day_list[cont]}"
