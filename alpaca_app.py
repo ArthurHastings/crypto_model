@@ -13,13 +13,13 @@ import math
 import alpaca_trade_api as tradeapi
 from dotenv import load_dotenv
 
-load_dotenv() 
+load_dotenv(override=True)
 
 api_key = os.getenv("APCA_API_KEY")
 debug = os.getenv("APCA_API_SECRET_KEY")
 
 
-PREDICTIONS_FILE = "predictions_temp.txt"
+PREDICTIONS_FILE = "predictions.txt"
 CONFIDENCE_THRESHOLD = 0.65
 
 APCA_API_KEY_ID = api_key
@@ -57,7 +57,16 @@ class AlpacaTradingApp:
         except Exception as e:
             self.output_text.insert(tk.END, f"Error fetching open orders: {e}\n")
             pending_buy_symbols = set()
-
+        # Uncomment this if u want the app to work only when the market is open not in pre-market
+        try:
+            clock = self.api.get_clock()
+            if not clock.is_open:
+                self.output_text.insert(tk.END, "Market is closed or in pre-/after-hours. Skipping trading.\n")
+                return
+        except Exception as e:
+            self.output_text.insert(tk.END, f"Error checking market clock: {e}\n")
+            return
+        # --------------------------------------------------------
         latest_predictions = self.get_latest_predictions()
         if not latest_predictions:
             messagebox.showerror("No Predictions", "Could not find predictions for a new day.")
