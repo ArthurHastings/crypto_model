@@ -26,14 +26,14 @@ class AlpacaTradingWorkflow:
 
     def run(self):
         # Uncomment this if u want the app to work only when the market is open not in pre-market
-        # try:
-        #     clock = self.api.get_clock()
-        #     if not clock.is_open:
-        #         print("Market is closed or in pre-/after-hours. Skipping trading.")
-        #         return
-        # except Exception as e:
-        #     print(f"Error checking market clock: {e}")
-        #     return
+        try:
+            clock = self.api.get_clock()
+            if not clock.is_open:
+                print("Market is closed or in pre-/after-hours. Skipping trading.")
+                return
+        except Exception as e:
+            print(f"Error checking market clock: {e}")
+            return
         # --------------------------------------------------------
         latest_predictions = self.get_latest_predictions()
         if not latest_predictions:
