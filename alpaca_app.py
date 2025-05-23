@@ -1,6 +1,6 @@
 """
 Romania timeframe when market is open:
-4:30 PM to 11:00 PM EET
+4:30 PM to 11:00 PM
 5:30 PM to 12:00 AM 
 """
 
@@ -11,12 +11,19 @@ import json
 import os
 import math
 import alpaca_trade_api as tradeapi
+from dotenv import load_dotenv
+
+load_dotenv() 
+
+api_key = os.getenv("APCA_API_KEY")
+debug = os.getenv("APCA_API_SECRET_KEY")
+
 
 PREDICTIONS_FILE = "predictions_temp.txt"
 CONFIDENCE_THRESHOLD = 0.65
 
-APCA_API_KEY_ID = os.environ.get("APCA_API_KEY_ID")
-APCA_API_SECRET_KEY = os.environ.get("APCA_API_SECRET_KEY")
+APCA_API_KEY_ID = api_key
+APCA_API_SECRET_KEY = debug
 BASE_URL = "https://paper-api.alpaca.markets"
 
 class AlpacaTradingApp:
