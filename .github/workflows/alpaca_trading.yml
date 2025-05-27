@@ -2,7 +2,7 @@ name: Alpaca Trading Daily Run
 
 on:
   schedule:
-    - cron: '31 13 * * 1-5'
+    - cron: '0 13 * * 1-5'
   workflow_dispatch:
 
 permissions:
@@ -29,6 +29,9 @@ jobs:
 
       - name: Install dependencies
         run: poetry install --no-root
+      
+      - name: Wait until 4:31
+        run: poetry run python wait_until_0431.py
 
       - name: Check if market is open
         run: poetry run python check_if_market_open.py
