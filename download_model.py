@@ -35,4 +35,4 @@ for model_name in model_names:
     except Exception as e:
         print(f"❌ Failed to download {model_name}: {e}")
 
-# ZZZZZ
+# ZZZZZzz
