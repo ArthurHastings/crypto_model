@@ -1,6 +1,7 @@
 import os
 import nltk
 import time
+from datetime import datetime, timedelta
 
 nltk_data_path = os.path.join(os.getcwd(), 'nltk_data')
 nltk.data.path.append(nltk_data_path)
@@ -22,13 +23,16 @@ tv = TvDatafeed(username='SOLOMON_ROCKS', password='zazacox1234567!')
 api_sentiment_model = os.getenv("API_SENTIMENT_MODEL", "http://localhost:5002/invocations")
 stock_list = ["AAPL", "MSFT", "GOOGL", "AMZN", "TSLA", "NVDA", "META", "NFLX", "INTC", "AMD", "BA", "JPM", "DIS", "V", "NKE"]
 
+csv_folder = "stock_csvs"
+os.makedirs(csv_folder, exist_ok=True)
+
 for stock_symbol in stock_list:
     print("Waiting 5 seconds...")
     time.sleep(5)
     try:
         print(f"\n===== Processing {stock_symbol} =====")
 
-        csv_path = f"{stock_symbol}_price_sentiment.csv"
+        csv_path = os.path.join(csv_folder, f"{stock_symbol}_price_sentiment.csv")
         if not os.path.exists(csv_path):
             print(f"CSV for {stock_symbol} not found. Skipping.")
             continue
@@ -45,7 +49,6 @@ for stock_symbol in stock_list:
             continue
 
         print(f"Updating {stock_symbol} from {last_date.date()} to {today.date()} ({nr_days} days)")
-        # print(f"last_date: {last_date}, today: {today}, stock_symbol: {stock_symbol}, api_key: {api_key}, nr_days: {nr_days}")
 
         max_length, headline_dict, summary_dict = get_news(nr_days, stock_symbol, api_key)
 

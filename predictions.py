@@ -19,7 +19,6 @@ from sklearn.preprocessing import StandardScaler
 import tensorflow as tf
 from datetime import datetime
 
-
 api_sentiment_model = os.getenv("MLFLOW_NGROK", "http://localhost:5003")
 mlflow.set_tracking_uri(api_sentiment_model)
 
@@ -29,20 +28,21 @@ stock_models = {
     "GOOGL": "GOOGL",
     "AMZN": "AMZN",
     "TSLA": "TSLA",
-    "NVDA":"NVDA",
-    "META":"META",
-    "NFLX":"NFLX",
-    "INTC":"INTC",
-    "AMD":"AMD",
-    "BA":"BA",
-    "JPM":"JPM",
-    "DIS":"DIS",
-    "V":"V",
-    "NKE":"NKE"
+    "NVDA": "NVDA",
+    "META": "META",
+    "NFLX": "NFLX",
+    "INTC": "INTC",
+    "AMD": "AMD",
+    "BA": "BA",
+    "JPM": "JPM",
+    "DIS": "DIS",
+    "V": "V",
+    "NKE": "NKE"
 }
 
 def load_latest_data(stock_symbol):
-    df = pd.read_csv(f"{stock_symbol}_price_sentiment.csv")
+    csv_path = os.path.join("stock_csvs", f"{stock_symbol}_price_sentiment.csv")
+    df = pd.read_csv(csv_path)
     latest = df.iloc[-1:]
 
     features = ['Close', 'Open', 'High', 'Low', 'Volume', 'Negative', 'Neutral', 'Positive']
@@ -59,12 +59,12 @@ with open("predictions.txt", "a") as f:
     f.write(f"\n--- Predictions from {datetime.now().strftime('%Y-%m-%d')} ---\n")
 
     for stock_symbol, model_name in stock_models.items():
-            print(f"Loading model for {stock_symbol}\n")
+        print(f"Loading model for {stock_symbol}\n")
 
-            model = mlflow.tensorflow.load_model(model_uri=f"models:/{model_name}/1")
-            x_input = load_latest_data(stock_symbol)
+        model = mlflow.tensorflow.load_model(model_uri=f"models:/{model_name}/1")
+        x_input = load_latest_data(stock_symbol)
 
-            pred = model.predict(x_input)[0][0]
-            movement = "Up" if pred > 0.5 else "Down"
+        pred = model.predict(x_input)[0][0]
+        movement = "Up" if pred > 0.5 else "Down"
 
-            f.write(f"{stock_symbol}: Predicted movement = {movement} ({pred:.4f})\n")
+        f.write(f"{stock_symbol}: Predicted movement = {movement} ({pred:.4f})\n")
