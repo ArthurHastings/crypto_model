@@ -34,3 +34,5 @@ for model_name in model_names:
         print(f"✅ {model_name} downloaded to {dst_path}")
     except Exception as e:
         print(f"❌ Failed to download {model_name}: {e}")
+
+"zz"
