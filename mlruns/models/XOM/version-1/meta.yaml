@@ -1,0 +1,14 @@
+aliases: []
+creation_timestamp: 1748463252774
+current_stage: None
+description: ''
+last_updated_timestamp: 1748463252774
+name: XOM
+run_id: 05161e00575249d9b746a8c393d3880a
+run_link: ''
+source: mlflow-artifacts:/871195560552074513/05161e00575249d9b746a8c393d3880a/artifacts/lstm_model_trial_16
+status: READY
+status_message: null
+storage_location: mlflow-artifacts:/871195560552074513/05161e00575249d9b746a8c393d3880a/artifacts/lstm_model_trial_16
+user_id: null
+version: 1

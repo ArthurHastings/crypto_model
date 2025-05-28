@@ -1,0 +1,14 @@
+aliases: []
+creation_timestamp: 1748463156984
+current_stage: None
+description: ''
+last_updated_timestamp: 1748463156984
+name: KO
+run_id: 15fe450a06e04adb8169dc8b094f1932
+run_link: ''
+source: mlflow-artifacts:/479952990417285714/15fe450a06e04adb8169dc8b094f1932/artifacts/lstm_model_trial_9
+status: READY
+status_message: null
+storage_location: mlflow-artifacts:/479952990417285714/15fe450a06e04adb8169dc8b094f1932/artifacts/lstm_model_trial_9
+user_id: null
+version: 1

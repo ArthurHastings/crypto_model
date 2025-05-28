@@ -1,0 +1,14 @@
+aliases: []
+creation_timestamp: 1748463174550
+current_stage: None
+description: ''
+last_updated_timestamp: 1748463174550
+name: PEP
+run_id: 74c3594d6b4b4a139cb2c1c9c2e4717e
+run_link: ''
+source: mlflow-artifacts:/630279195133962014/74c3594d6b4b4a139cb2c1c9c2e4717e/artifacts/lstm_model_trial_20
+status: READY
+status_message: null
+storage_location: mlflow-artifacts:/630279195133962014/74c3594d6b4b4a139cb2c1c9c2e4717e/artifacts/lstm_model_trial_20
+user_id: null
+version: 1

@@ -1,7 +1,7 @@
 import subprocess
 import mlflow
 import time
-
+# are probleme cu poetry run python deploy_model.py, faci cu python depoloy_model.py
 mlflow.set_tracking_uri("http://localhost:5003")
 
 command = [

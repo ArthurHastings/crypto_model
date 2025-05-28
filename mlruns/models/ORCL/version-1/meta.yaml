@@ -1,0 +1,14 @@
+aliases: []
+creation_timestamp: 1748467232148
+current_stage: None
+description: ''
+last_updated_timestamp: 1748467232148
+name: ORCL
+run_id: e2fac1a8fba44e448fd33d3f2d112e68
+run_link: ''
+source: mlflow-artifacts:/368787946698016697/e2fac1a8fba44e448fd33d3f2d112e68/artifacts/lstm_model_trial_18
+status: READY
+status_message: null
+storage_location: mlflow-artifacts:/368787946698016697/e2fac1a8fba44e448fd33d3f2d112e68/artifacts/lstm_model_trial_18
+user_id: null
+version: 1

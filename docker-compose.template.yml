@@ -142,3 +142,139 @@ services:
     environment:
       - MLFLOW_TRACKING_URI=NGROK_URL_PLACEHOLDER
       - MODEL_NAME=V/lstm_model_trial_3
+
+# ------------------------------------- new ------------!!!!!!!edit lstm_model numbers
+  model17:
+    image: solomonrocks/crypto_sentiment_model:latest
+    container_name: BAC
+    ports:
+      - "3017:5001"
+    environment:
+      - MLFLOW_TRACKING_URI=NGROK_URL_PLACEHOLDER
+      - MODEL_NAME=BAC/lstm_model_trial_19
+
+  model18:
+    image: solomonrocks/crypto_sentiment_model:latest
+    container_name: COST
+    ports:
+      - "3018:5001"
+    environment:
+      - MLFLOW_TRACKING_URI=NGROK_URL_PLACEHOLDER
+      - MODEL_NAME=COST/lstm_model_trial_13
+
+  model19:
+    image: solomonrocks/crypto_sentiment_model:latest
+    container_name: CVX
+    ports:
+      - "3019:5001"
+    environment:
+      - MLFLOW_TRACKING_URI=NGROK_URL_PLACEHOLDER
+      - MODEL_NAME=CVX/lstm_model_trial_15
+
+  model20:
+    image: solomonrocks/crypto_sentiment_model:latest
+    container_name: IBM
+    ports:
+      - "3020:5001"
+    environment:
+      - MLFLOW_TRACKING_URI=NGROK_URL_PLACEHOLDER
+      - MODEL_NAME=IBM/lstm_model_trial_23
+
+  model21:
+    image: solomonrocks/crypto_sentiment_model:latest
+    container_name: KO
+    ports:
+      - "3021:5001"
+    environment:
+      - MLFLOW_TRACKING_URI=NGROK_URL_PLACEHOLDER
+      - MODEL_NAME=KO/lstm_model_trial_9
+
+  model22:
+    image: solomonrocks/crypto_sentiment_model:latest
+    container_name: MCD
+    ports:
+      - "3022:5001"
+    environment:
+      - MLFLOW_TRACKING_URI=NGROK_URL_PLACEHOLDER
+      - MODEL_NAME=MCD/lstm_model_trial_17
+
+  model23:
+    image: solomonrocks/crypto_sentiment_model:latest
+    container_name: MRK
+    ports:
+      - "3023:5001"
+    environment:
+      - MLFLOW_TRACKING_URI=NGROK_URL_PLACEHOLDER
+      - MODEL_NAME=MRK/lstm_model_trial_23
+
+  model24:
+    image: solomonrocks/crypto_sentiment_model:latest
+    container_name: ORCL
+    ports:
+      - "3024:5001"
+    environment:
+      - MLFLOW_TRACKING_URI=NGROK_URL_PLACEHOLDER
+      - MODEL_NAME=ORCL/lstm_model_trial_18
+
+  model25:
+    image: solomonrocks/crypto_sentiment_model:latest
+    container_name: PEP
+    ports:
+      - "3025:5001"
+    environment:
+      - MLFLOW_TRACKING_URI=NGROK_URL_PLACEHOLDER
+      - MODEL_NAME=PEP/lstm_model_trial_20
+
+  model26:
+    image: solomonrocks/crypto_sentiment_model:latest
+    container_name: PFE
+    ports:
+      - "3026:5001"
+    environment:
+      - MLFLOW_TRACKING_URI=NGROK_URL_PLACEHOLDER
+      - MODEL_NAME=PFE/lstm_model_trial_12
+
+  model27:
+    image: solomonrocks/crypto_sentiment_model:latest
+    container_name: PYPL
+    ports:
+      - "3027:5001"
+    environment:
+      - MLFLOW_TRACKING_URI=NGROK_URL_PLACEHOLDER
+      - MODEL_NAME=PYPL/lstm_model_trial_21
+
+  model28:
+    image: solomonrocks/crypto_sentiment_model:latest
+    container_name: SNOW
+    ports:
+      - "3028:5001"
+    environment:
+      - MLFLOW_TRACKING_URI=NGROK_URL_PLACEHOLDER
+      - MODEL_NAME=SNOW/lstm_model_trial_22
+
+  model29:
+    image: solomonrocks/crypto_sentiment_model:latest
+    container_name: UNH
+    ports:
+      - "3029:5001"
+    environment:
+      - MLFLOW_TRACKING_URI=NGROK_URL_PLACEHOLDER
+      - MODEL_NAME=UNH/lstm_model_trial_14
+
+  model30:
+    image: solomonrocks/crypto_sentiment_model:latest
+    container_name: WMT
+    ports:
+      - "3030:5001"
+    environment:
+      - MLFLOW_TRACKING_URI=NGROK_URL_PLACEHOLDER
+      - MODEL_NAME=WMT/lstm_model_trial_18
+
+  model31:
+    image: solomonrocks/crypto_sentiment_model:latest
+    container_name: XOM
+    ports:
+      - "3031:5001"
+    environment:
+      - MLFLOW_TRACKING_URI=NGROK_URL_PLACEHOLDER
+      - MODEL_NAME=XOM/lstm_model_trial_16

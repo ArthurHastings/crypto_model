@@ -1,0 +1,14 @@
+aliases: []
+creation_timestamp: 1748463234496
+current_stage: None
+description: ''
+last_updated_timestamp: 1748463234496
+name: CVX
+run_id: 9929b5456b754efe985efd39415f02db
+run_link: ''
+source: mlflow-artifacts:/730626367724332561/9929b5456b754efe985efd39415f02db/artifacts/lstm_model_trial_15
+status: READY
+status_message: null
+storage_location: mlflow-artifacts:/730626367724332561/9929b5456b754efe985efd39415f02db/artifacts/lstm_model_trial_15
+user_id: null
+version: 1

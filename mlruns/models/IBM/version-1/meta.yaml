@@ -1,0 +1,14 @@
+aliases: []
+creation_timestamp: 1748467250068
+current_stage: None
+description: ''
+last_updated_timestamp: 1748467250068
+name: IBM
+run_id: 5edf2bc927d748f997c59d833be82050
+run_link: ''
+source: mlflow-artifacts:/703149480203922549/5edf2bc927d748f997c59d833be82050/artifacts/lstm_model_trial_23
+status: READY
+status_message: null
+storage_location: mlflow-artifacts:/703149480203922549/5edf2bc927d748f997c59d833be82050/artifacts/lstm_model_trial_23
+user_id: null
+version: 1

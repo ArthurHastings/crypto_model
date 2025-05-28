@@ -21,7 +21,8 @@ from tvDatafeed import TvDatafeed, Interval
 
 tv = TvDatafeed(username='SOLOMON_ROCKS', password='zazacox1234567!')
 api_sentiment_model = os.getenv("API_SENTIMENT_MODEL", "http://localhost:5002/invocations")
-stock_list = ["AAPL", "MSFT", "GOOGL", "AMZN", "TSLA", "NVDA", "META", "NFLX", "INTC", "AMD", "BA", "JPM", "DIS", "V", "NKE"]
+stock_list = ["AAPL", "MSFT", "GOOGL", "AMZN", "TSLA", "NVDA", "META", "NFLX", "INTC", "AMD", "BA", "JPM", "DIS", "V", "NKE",
+                "PYPL", "KO", "PEP", "PFE", "MRK", "CVX", "XOM", "MCD", "WMT", "ORCL", "IBM", "UNH", "COST", "BAC", "SNOW"]
 
 csv_folder = "stock_csvs"
 os.makedirs(csv_folder, exist_ok=True)

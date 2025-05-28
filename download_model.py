@@ -2,16 +2,17 @@ import mlflow
 from mlflow.tracking import MlflowClient
 import os
 
-mlflow_ngrok = os.getenv("MLFLOW_NGROK", "http://localhost:5001")
+mlflow_ngrok = os.getenv("MLFLOW_NGROK", "http://localhost:5003")
 mlflow.set_tracking_uri(mlflow_ngrok)
 
 client = MlflowClient()
 
 model_names = [
-    "crypto_sentiment_model_1",
-    "AAPL", "AMD", "AMZN", "BA", "DIS", "GOOGL",
-    "INTC", "JPM", "META", "MSFT", "NFLX", "NKE",
-    "NVDA", "TSLA", "V"
+    # "crypto_sentiment_model_1",
+    # "AAPL", "AMD", "AMZN", "BA", "DIS", "GOOGL",
+    # "INTC", "JPM", "META", "MSFT", "NFLX", "NKE",
+    # "NVDA", "TSLA", "V"
+    "PYPL", "KO", "PEP", "PFE", "MRK", "CVX", "XOM", "MCD", "WMT", "ORCL", "IBM", "UNH", "COST", "BAC", "SNOW"
 ]
 
 output_dir = os.path.join("mlruns", "models")

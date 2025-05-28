@@ -14,9 +14,12 @@ if not os.path.exists(os.path.join(nltk_data_path, 'tokenizers', 'punkt')):
 from imports import *
 from generate_csvs import generate_csv
 from clean_headline_sentiment import clean_files
+from tvDatafeed import TvDatafeed, Interval
+# --------------------------------------------------------------------------------------------------------------------------------
 
 api_key = "cvpq5t9r01qve7iqiis0cvpq5t9r01qve7iqiisg"
 # api_sentiment_model = "http://localhost:5002/invocations"
+tv = TvDatafeed(username='SOLOMON_ROCKS', password='zazacox1234567!')
 
 period = 360
 
@@ -147,7 +150,7 @@ def process_stock(symbol, api_sentiment_model):
     response_summary_sentiment = api_call(sentence_pad_dict_summary, api_sentiment_model, batch_size=200)
     df_summary = create_dataset(response_summary_sentiment, summary_dict)
 
-    final_df_name = generate_csv(df_headlines, df_summary, period, stock_symbol)
+    final_df_name = generate_csv(df_headlines, df_summary, period, stock_symbol, tv)
 
     new_df = pd.read_csv(final_df_name)
     try:
@@ -165,9 +168,8 @@ def process_stock(symbol, api_sentiment_model):
 
 if __name__ == "__main__":
     api_sentiment_model = os.getenv("API_SENTIMENT_MODEL", "http://localhost:5002/invocations")
-    # stock_symbols = ["AAPL", "MSFT", "GOOGL", "AMZN", "TSLA", "NVDA", "META", "NFLX", "INTC", "AMD", "BA", "JPM", "DIS", "V", "NKE"]
-    stock_symbols = ["INTC", "AMD", "BA", "JPM", "DIS", "V", "NKE"]
-
+    # stock_symbols = ["AAPL", "MSFT", "GOOGL", "AMZN", "TSLA", "NVDA", "META", "NFLX", "INTC", "AMD", "BA", "JPM", "DIS", "V", "NKE"] # original 15 stocks
+    stock_symbols = ["PYPL", "KO", "PEP", "PFE", "MRK", "CVX", "XOM", "MCD", "WMT", "ORCL", "IBM", "UNH", "COST", "BAC", "SNOW"]
     for symbol in stock_symbols:
         process_stock(symbol, api_sentiment_model)
         print(f"Waiting 2 minutes to avoid rate limits before next stock...")

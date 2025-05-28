@@ -1,0 +1,14 @@
+aliases: []
+creation_timestamp: 1748467298719
+current_stage: None
+description: ''
+last_updated_timestamp: 1748467298719
+name: BAC
+run_id: 2621abb73c3f473286d1545aa5f74214
+run_link: ''
+source: mlflow-artifacts:/262556122767594244/2621abb73c3f473286d1545aa5f74214/artifacts/lstm_model_trial_19
+status: READY
+status_message: null
+storage_location: mlflow-artifacts:/262556122767594244/2621abb73c3f473286d1545aa5f74214/artifacts/lstm_model_trial_19
+user_id: null
+version: 1

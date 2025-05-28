@@ -37,7 +37,22 @@ stock_models = {
     "JPM": "JPM",
     "DIS": "DIS",
     "V": "V",
-    "NKE": "NKE"
+    "NKE": "NKE", # --------- new
+    "PYPL": "PYPL",
+    "KO": "KO",
+    "PEP": "PEP",
+    "PFE": "PFE",
+    "MRK": "MRK",
+    "CVX": "CVX",
+    "XOM": "XOM",
+    "MCD": "MCD",
+    "WMT": "WMT",
+    "ORCL": "ORCL",
+    "IBM": "IBM",
+    "UNH": "UNH",
+    "COST": "COST",
+    "BAC": "BAC",
+    "SNOW": "SNOW"
 }
 
 def load_latest_data(stock_symbol):

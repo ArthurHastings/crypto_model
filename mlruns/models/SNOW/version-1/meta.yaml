@@ -1,0 +1,14 @@
+aliases: []
+creation_timestamp: 1748467312452
+current_stage: None
+description: ''
+last_updated_timestamp: 1748467312452
+name: SNOW
+run_id: 310a6b531ffb44b98bec934d389f625c
+run_link: ''
+source: mlflow-artifacts:/992502834065179362/310a6b531ffb44b98bec934d389f625c/artifacts/lstm_model_trial_22
+status: READY
+status_message: null
+storage_location: mlflow-artifacts:/992502834065179362/310a6b531ffb44b98bec934d389f625c/artifacts/lstm_model_trial_22
+user_id: null
+version: 1

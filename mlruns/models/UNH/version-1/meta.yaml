@@ -1,0 +1,14 @@
+aliases: []
+creation_timestamp: 1748467265764
+current_stage: None
+description: ''
+last_updated_timestamp: 1748467265764
+name: UNH
+run_id: 0266931df8db43e5a7fa4673acf7a264
+run_link: ''
+source: mlflow-artifacts:/515759688606582510/0266931df8db43e5a7fa4673acf7a264/artifacts/lstm_model_trial_14
+status: READY
+status_message: null
+storage_location: mlflow-artifacts:/515759688606582510/0266931df8db43e5a7fa4673acf7a264/artifacts/lstm_model_trial_14
+user_id: null
+version: 1

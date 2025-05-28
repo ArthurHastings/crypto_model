@@ -1,25 +1,32 @@
 from imports import *
 import optuna
 
-stock_list = ["AAPL"]
+stock_list = ["PYPL", "KO", "PEP", "PFE", "MRK", "CVX", "XOM", "MCD", "WMT", "ORCL", "IBM", "UNH", "COST", "BAC", "SNOW"]
+
 # stock_list = ["AAPL", "MSFT", "GOOGL", "AMZN", "TSLA", "NVDA", "META", "NFLX", "INTC", "AMD", "BA", "JPM", "DIS", "V", "NKE"]
 mlflow_ngrok = os.getenv("MLFLOW_NGROK", "http://localhost:5000")
 mlflow.set_tracking_uri(mlflow_ngrok)
 print(f"MLFLOW URL: {mlflow_ngrok}")
+csv_folder = "stock_csvs"
 
 for stock_symbol in stock_list:
 
-    mlflow.set_experiment(f"MODEL_{stock_symbol}v8")
+    mlflow.set_experiment(f"MODEL_{stock_symbol}v1")
 
-    data = pd.read_csv(f"{stock_symbol}_price_sentiment.csv")
-    data['Return'] = data['Close'].pct_change().fillna(0)
-    data['Volume_Change'] = data['Volume'].pct_change().fillna(0)
+    csv_path = os.path.join(csv_folder, f"{stock_symbol}_price_sentiment.csv")
+    if not os.path.exists(csv_path):
+        print(f"CSV for {stock_symbol} not found. Skipping.")
+        continue
+
+    data = pd.read_csv(csv_path)
+    # data['Return'] = data['Close'].pct_change().fillna(0)
+    # data['Volume_Change'] = data['Volume'].pct_change().fillna(0)
     data['Target'] = (data['Close'].shift(-1) > data['Close']).astype(int)
     data = data[:-1]
 
     data.to_csv("zaza.csv", index=False)
 
-    X = data[['Close', 'Open', 'Volume', "High", "Low", 'Negative', 'Neutral', 'Positive', "Return", "Volume_Change"]]
+    X = data[['Close', 'Open', 'Volume', "High", "Low", 'Negative', 'Neutral', 'Positive']]
     y = data['Target']
 
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=68)
@@ -31,7 +38,7 @@ for stock_symbol in stock_list:
     X_test = X_test.reshape((X_test.shape[0], 1, X_test.shape[1]))
     
 
-    num_trials = 100
+    num_trials = 25
 
     def objective(trial):
         optimizer_name = trial.suggest_categorical("optimizer", ["adam", "adamw"])

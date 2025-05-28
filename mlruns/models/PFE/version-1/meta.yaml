@@ -1,0 +1,14 @@
+aliases: []
+creation_timestamp: 1748463195090
+current_stage: None
+description: ''
+last_updated_timestamp: 1748463195090
+name: PFE
+run_id: fc187cfbb08c4ac69723ed927b6c0ae5
+run_link: ''
+source: mlflow-artifacts:/202430322454522210/fc187cfbb08c4ac69723ed927b6c0ae5/artifacts/lstm_model_trial_12
+status: READY
+status_message: null
+storage_location: mlflow-artifacts:/202430322454522210/fc187cfbb08c4ac69723ed927b6c0ae5/artifacts/lstm_model_trial_12
+user_id: null
+version: 1

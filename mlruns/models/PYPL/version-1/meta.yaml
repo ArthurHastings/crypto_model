@@ -1,0 +1,14 @@
+aliases: []
+creation_timestamp: 1748463139085
+current_stage: None
+description: ''
+last_updated_timestamp: 1748463139085
+name: PYPL
+run_id: e104fe9e7ddd49c9ac4f7aa0ddb449f2
+run_link: ''
+source: mlflow-artifacts:/559584662416649697/e104fe9e7ddd49c9ac4f7aa0ddb449f2/artifacts/lstm_model_trial_21
+status: READY
+status_message: null
+storage_location: mlflow-artifacts:/559584662416649697/e104fe9e7ddd49c9ac4f7aa0ddb449f2/artifacts/lstm_model_trial_21
+user_id: null
+version: 1
