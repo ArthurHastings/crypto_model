@@ -24,7 +24,6 @@ for stock_symbol in stock_list:
     data['Target'] = (data['Close'].shift(-1) > data['Close']).astype(int)
     data = data[:-1]
 
-    data.to_csv("zaza.csv", index=False)
 
     X = data[['Close', 'Open', 'Volume', "High", "Low", 'Negative', 'Neutral', 'Positive']]
     y = data['Target']

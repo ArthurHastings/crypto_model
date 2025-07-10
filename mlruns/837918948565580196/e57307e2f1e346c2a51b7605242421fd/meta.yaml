@@ -1,0 +1,15 @@
+artifact_uri: mlflow-artifacts:/837918948565580196/e57307e2f1e346c2a51b7605242421fd/artifacts
+end_time: 1748978343002
+entry_point_name: ''
+experiment_id: '837918948565580196'
+lifecycle_stage: active
+run_id: e57307e2f1e346c2a51b7605242421fd
+run_name: Optuna_trial_12
+run_uuid: e57307e2f1e346c2a51b7605242421fd
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1748978320481
+status: 3
+tags: []
+user_id: User

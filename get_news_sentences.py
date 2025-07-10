@@ -19,7 +19,7 @@ from tvDatafeed import TvDatafeed, Interval
 
 api_key = "cvpq5t9r01qve7iqiis0cvpq5t9r01qve7iqiisg"
 # api_sentiment_model = "http://localhost:5002/invocations"
-tv = TvDatafeed(username='SOLOMON_ROCKS', password='zazacox1234567!')
+tv = TvDatafeed(username='SOLOMON_ROCKS', password='Tempword12345!')
 
 period = 360
 
