@@ -74,7 +74,7 @@ with open("predictions.txt", "a") as f:
     f.write(f"\n--- Predictions from {datetime.now().strftime('%Y-%m-%d')} ---\n")
 
     for stock_symbol, model_name in stock_models.items():
-        time.sleep(1)
+        time.sleep(15)
         print(f"Loading model for {stock_symbol}\n")
 
         model = mlflow.tensorflow.load_model(model_uri=f"models:/{model_name}/1")
